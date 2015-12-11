@@ -116,6 +116,18 @@ public class MainActivity extends AppCompatActivity
                 LOCATION_REFRESH_DISTANCE, mLocationListener);
 
 
+        // tap start Map Handling
+        FloatingActionButton map = (FloatingActionButton) findViewById(R.id.start_map);
+        map.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                View mapView = findViewById(R.id.fragment_geo);
+                mapView.setVisibility(View.VISIBLE);
+            }
+        });
+
+
         // tap make photo
         FloatingActionButton fab = (FloatingActionButton) findViewById(com.robellistudios.photobuddy.R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -253,12 +265,17 @@ public class MainActivity extends AppCompatActivity
         switch (requestCode) {
             case RESULT_GALLERY:               // from Album (MediaStore)
                 if (null != data) {
-                    ImageView iv = mMainImageView;
-                    mMainImageView_Save = mMainImageView;       // save the Original Image
-                    iv.setImageURI(data.getData());
-
                     try {
+                        ImageView iv = mMainImageView;
+                        mMainImageView_Save = mMainImageView;       // save the Original Image
+                        iv.setImageURI(data.getData());
                         mMainImageView = gh.RotateImage(getApplicationContext(), iv, data.getData().normalizeScheme());
+
+                        View startmap = findViewById(R.id.start_map);
+                        startmap.setVisibility(View.VISIBLE);
+                        View startweather = findViewById(R.id.start_weather);
+                        startweather.setVisibility(View.VISIBLE);
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -283,7 +300,7 @@ public class MainActivity extends AppCompatActivity
         LocalBroadcastManager.getInstance(this).unregisterReceiver(
                 localBroadcastReceiver);
 
-        Log.i(APP_TAG, "PAUSED; deactivate Navigation Listener");
+        Log.i(APP_TAG, "PAUSED deactivate Navi Listener");
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
