@@ -208,7 +208,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-
         DrawerLayout drawer = (DrawerLayout) findViewById(com.robellistudios.photobuddy.R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, com.robellistudios.photobuddy.R.string.navigation_drawer_open, com.robellistudios.photobuddy.R.string.navigation_drawer_close);

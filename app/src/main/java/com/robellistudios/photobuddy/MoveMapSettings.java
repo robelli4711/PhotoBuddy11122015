@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
@@ -81,6 +82,27 @@ public class MoveMapSettings extends DialogFragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                // Map Location on the Image
+                RadioButton radioButton_left_up = (RadioButton) inf.findViewById(R.id.radioButton_left_up);
+                RadioButton radioButton_right_up = (RadioButton)inf.findViewById(R.id.radioButton_right_up);
+                RadioButton radioButton_right_down = (RadioButton)inf.findViewById(R.id.radioButton_right_down);
+                RadioButton radioButton_left_down = (RadioButton)inf.findViewById(R.id.radioButton_left_down);
+
+                if(radioButton_left_up.isChecked())
+                    prefsedit.putString("map_location", "TL");
+
+                if(radioButton_right_up.isChecked())
+                    prefsedit.putString("map_location", "TR");
+
+
+                if(radioButton_right_down.isChecked())
+                    prefsedit.putString("map_location", "BR");
+
+                if(radioButton_left_down.isChecked())
+                    prefs.edit().putString("map_location", "BL");
+
+                prefsedit.commit();
 
                 dismiss();
             }

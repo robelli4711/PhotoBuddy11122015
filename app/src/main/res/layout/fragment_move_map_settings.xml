@@ -15,14 +15,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/radioButton_right_up"
-            android:layout_gravity="left|top" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/radioButton_right_up"
             android:layout_gravity="right|top"
             android:layout_alignParentEnd="true" />
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/radioButton_left_up"
+        android:layout_gravity="left|top" />
 
         <RadioButton
             android:layout_width="wrap_content"

@@ -3,6 +3,7 @@ package com.robellistudios.photobuddy;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -12,6 +13,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Layout;
 import android.text.StaticLayout;
@@ -73,12 +75,17 @@ public class DataToPhotoMerger extends BitmapDrawable {
         Canvas c1 = new Canvas(mutableBitmap);
         drawable2.draw(c1);
 
-        mBitmap = workingBitmap;
+        mBitmap = mutableBitmap;
     }
 
 
     DataToPhotoMerger(final Context context, Bitmap background, Bitmap layout, int height, int width, Matrix matrix) {
 
+        // get Settings for Size etc.
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        Log.d("PB***", "xxx");
+
+        // Merge Images
         Canvas c = new Canvas(layout);
         BitmapDrawable drawable2 = new BitmapDrawable(context.getResources(), layout);
         drawable2.setBounds(500, 200, 800, 400);    // TODO dynamically change for the setting values
