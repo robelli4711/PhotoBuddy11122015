@@ -121,8 +121,7 @@ public class MainActivity extends AppCompatActivity
         map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                setControls(true, false, false);
+                setControls(false, false, true, false, false);
             }
         });
 
@@ -152,6 +151,19 @@ public class MainActivity extends AppCompatActivity
                         Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(galleryIntent, RESULT_GALLERY);
+            }
+        });
+
+
+        // tap get Moving Settings
+        final FloatingActionButton settings_geo_fragment = (FloatingActionButton) findViewById(com.robellistudios.photobuddy.R.id.settings_geo_fragment);
+        settings_geo_fragment.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                findViewById(R.id.fragment_geo).setVisibility(View.INVISIBLE);
+                setControls(true, true, false, true, true);
             }
         });
 
@@ -457,28 +469,42 @@ public class MainActivity extends AppCompatActivity
    }
 
 
-    private void setControls(boolean geoframgment, boolean map, boolean weather) {
+    private void setControls(boolean album, boolean camera, boolean geoframgment, boolean map, boolean weather) {
 
-        View mapView = findViewById(R.id.fragment_geo);
-        View startmap = findViewById(R.id.start_map);
-        View startweather = findViewById(R.id.start_weather);
+//        View mapView = findViewById(R.id.fragment_geo);
+//        View startmap = findViewById(R.id.start_map);
+//        View startweather = findViewById(R.id.start_weather);
+//        View albumView = findViewById(R.id.alb);
+//        View cameraView = findViewById(R.id.fab);
+
+        if(album) {
+            findViewById(R.id.alb).setVisibility(View.VISIBLE);
+        } else {
+            findViewById(R.id.alb).setVisibility(View.INVISIBLE);
+        }
+
+        if(camera) {
+            findViewById(R.id.fab).setVisibility(View.VISIBLE);
+        } else {
+            findViewById(R.id.fab).setVisibility(View.INVISIBLE);
+        }
 
         if(geoframgment) {
-            mapView.setVisibility(View.VISIBLE);
+            findViewById(R.id.fragment_geo).setVisibility(View.VISIBLE);
         } else {
-            mapView.setVisibility(View.INVISIBLE);
+            findViewById(R.id.fragment_geo).setVisibility(View.INVISIBLE);
         }
 
         if (map) {
-            startmap.setVisibility(View.VISIBLE);
+            findViewById(R.id.start_map).setVisibility(View.VISIBLE);
         } else {
-            startmap.setVisibility(View.INVISIBLE);
+            findViewById(R.id.start_map).setVisibility(View.INVISIBLE);
         }
 
         if (weather) {
-            startweather.setVisibility(View.VISIBLE);
+            findViewById(R.id.start_weather).setVisibility(View.VISIBLE);
         } else {
-            startweather.setVisibility(View.INVISIBLE);
+            findViewById(R.id.start_weather).setVisibility(View.INVISIBLE);
         }
     }
 
