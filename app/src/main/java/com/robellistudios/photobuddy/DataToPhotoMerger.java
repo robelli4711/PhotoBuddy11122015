@@ -135,7 +135,10 @@ public class DataToPhotoMerger extends BitmapDrawable {
         // Merge Images
         Canvas c = new Canvas(layout);
         BitmapDrawable drawable2 = new BitmapDrawable(context.getResources(), layout);
-        drawable2.setBounds(left, top, right, bottom);    // TODO dynamically change for the setting values
+        drawable2.setBounds(left, top, right, bottom);
+
+        int i = (int)prefs.getFloat("map_settings_opaque", 100);        // apply Alpha value
+        drawable2.setAlpha((int) (i*2.55));
 
         // Merge Background with Layout
         Bitmap workingBitmap = Bitmap.createBitmap(background);
