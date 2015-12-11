@@ -87,13 +87,16 @@ public class MainActivity extends AppCompatActivity
         // Setup Broadcast Receiver
         localBroadcastReceiver = new LocalBroadcastReceiver();
 
+        // initialising the object of the FragmentManager.
+        fragmentManager = getSupportFragmentManager();
+
         // Setup GUI
         setContentView(com.robellistudios.photobuddy.R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(com.robellistudios.photobuddy.R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // initialising the object of the FragmentManager.
-        fragmentManager = getSupportFragmentManager();
+        View fragment_geo = findViewById(R.id.fragment_geo);
+        fragment_geo.setVisibility(View.INVISIBLE);
 
         // get the BackgroudnImage
         mMainImageView = (ImageView) findViewById(com.robellistudios.photobuddy.R.id.imageView2);
@@ -106,6 +109,7 @@ public class MainActivity extends AppCompatActivity
         }
         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
                 LOCATION_REFRESH_DISTANCE, mLocationListener);
+
 
         // tap make photo
         FloatingActionButton fab = (FloatingActionButton) findViewById(com.robellistudios.photobuddy.R.id.fab);
