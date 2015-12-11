@@ -81,13 +81,32 @@ public class DataToPhotoMerger extends BitmapDrawable {
 
     DataToPhotoMerger(final Context context, Bitmap background, Bitmap layout, int height, int width, Matrix matrix) {
 
-        int left = 500;
-        int top = 200;
-        int right = 600;
-        int bottom = 600;
-
         // get Settings for Size etc.
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+
+        int left = 500;
+        int top = 200;
+        int right = 0;
+        int bottom = 0;
+        int diff = 0;
+
+        switch(prefs.getString("map_size", "")) {
+            case "big":
+                right = 900;
+                bottom = 900;
+                diff = 650;
+                break;
+            case "medium":
+                right = 600;
+                bottom = 600;
+                diff = 450;
+                break;
+            case "small":
+                right = 300;
+                bottom = 300;
+                diff = 250;
+                break;
+        }
 
         switch (prefs.getString("map_location", "")) {
 
@@ -96,18 +115,18 @@ public class DataToPhotoMerger extends BitmapDrawable {
                 top = 50;
                 break;
             case "TR":
-                left = background.getScaledWidth(context.getResources().getDisplayMetrics().densityDpi) - 450;
+                left = background.getScaledWidth(context.getResources().getDisplayMetrics().densityDpi) - diff;
                 top = 50;
-                right = left + 450;
+                right = left + diff;
                 break;
             case "BL":
                 left = 50;
-                top = background.getScaledHeight(context.getResources().getDisplayMetrics().densityDpi) - 450;
+                top = background.getScaledHeight(context.getResources().getDisplayMetrics().densityDpi) - diff;
                 bottom = (background.getScaledHeight(context.getResources().getDisplayMetrics().densityDpi) - 50);
                 break;
             case "BR":
-                top = background.getScaledHeight(context.getResources().getDisplayMetrics().densityDpi) - 450;
-                left = background.getScaledWidth(context.getResources().getDisplayMetrics().densityDpi) - 450;
+                top = background.getScaledHeight(context.getResources().getDisplayMetrics().densityDpi) - diff;
+                left = background.getScaledWidth(context.getResources().getDisplayMetrics().densityDpi) - diff;
                 bottom = (background.getScaledHeight(context.getResources().getDisplayMetrics().densityDpi) - 50);
                 right = left + 450;
                 break;
