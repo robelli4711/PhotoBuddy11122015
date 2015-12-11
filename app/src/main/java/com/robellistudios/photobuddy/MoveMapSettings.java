@@ -13,6 +13,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
@@ -104,6 +105,17 @@ public class MoveMapSettings extends DialogFragment {
                 radioButton_right_down.setChecked(true);
                 break;
         }
+
+        radioButton_left_up.setOnCheckedChangeListener(OnCheckedChangeListener);
+
+
+        CompoundButton.OnCheckedChangeListener onRadioCheckedChangedListener = new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+            }
+        };
+
 
         FloatingActionButton fab = (FloatingActionButton) inf.findViewById(R.id.ok_from_move_map_settings);
         fab.setOnClickListener(new View.OnClickListener() {

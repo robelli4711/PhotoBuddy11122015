@@ -11,53 +11,68 @@
     android:gravity="center"
     android:layoutMode="opticalBounds">
 
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/radioButton_right_up"
-            android:layout_gravity="right|top"
-            android:layout_alignParentEnd="true" />
-
-    <RadioButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/radioButton_left_up"
-        android:layout_gravity="left|top" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/radioButton_right_down"
-            android:layout_gravity="right|center_vertical"
-            android:layout_alignTop="@+id/radioButton_left_down"
-            android:layout_alignStart="@+id/radioButton_right_up" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/radioButton_left_down"
-            android:layout_gravity="left|center_vertical"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="115dp" />
-
-        <ImageView
+    <ImageView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="150dp"
             android:id="@+id/imageView4"
             android:src="@mipmap/ic_landscape_1024_2048"
-            android:layout_alignTop="@+id/radioButton_right_up"
-            android:scaleType="centerCrop"
-            android:layout_alignBottom="@+id/radioButton_right_down" />
+            android:scaleType="centerCrop" />
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true">
+
+    </RadioGroup>
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true">
+
+    </RadioGroup>
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:id="@+id/radioGroup">
+
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/radioButton_right_up"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
+    </RadioGroup>
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignBottom="@+id/radioGroup">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/radioButton_left_up" />
+
+    </RadioGroup>
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_below="@+id/radioButton_right_down"
-        android:layout_alignEnd="@+id/radioButton_right_down"
         android:weightSum="1"
-        android:paddingTop="20dp">
+        android:paddingTop="20dp"
+        android:layout_below="@+id/imageView4"
+        android:layout_alignParentStart="true"
+        android:id="@+id/linearLayout">
 
         <TextView
             android:layout_width="wrap_content"
@@ -125,5 +140,20 @@
             android:src="@drawable/ic_ok" />
 
     </LinearLayout>
+
+    <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/radioButton_right_down"
+        android:layout_alignBottom="@+id/imageView4"
+        android:layout_alignParentEnd="true" />
+
+    <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/radioButton_left_down"
+            android:layout_gravity="left|bottom"
+        android:layout_above="@+id/linearLayout"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
