@@ -84,7 +84,7 @@ public class DataToPhotoMerger extends BitmapDrawable {
         int left = 500;
         int top = 200;
         int right = 600;
-        int bottom = 500;
+        int bottom = 600;
 
         // get Settings for Size etc.
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -96,6 +96,9 @@ public class DataToPhotoMerger extends BitmapDrawable {
                 top = 50;
                 break;
             case "TR":
+                left = layout.getScaledWidth(context.getResources().getDisplayMetrics().widthPixels) - 100;
+                top = 50;
+                right = left + 450;
                 break;
             case "BL":
                 break;
