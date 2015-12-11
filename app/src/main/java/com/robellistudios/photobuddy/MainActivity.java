@@ -98,6 +98,11 @@ public class MainActivity extends AppCompatActivity
         View fragment_geo = findViewById(R.id.fragment_geo);
         fragment_geo.setVisibility(View.INVISIBLE);
 
+        View start_map = findViewById(R.id.start_map);
+        start_map.setVisibility(View.INVISIBLE);
+        View start_weather = findViewById(R.id.start_weather);
+        start_weather.setVisibility(View.INVISIBLE);
+
         // get the BackgroudnImage
         mMainImageView = (ImageView) findViewById(com.robellistudios.photobuddy.R.id.imageView2);
         mMainImageView_Save = mMainImageView;       // make a copy of the Original Image
@@ -490,12 +495,12 @@ public class MainActivity extends AppCompatActivity
             TextView bearing_layout = (TextView) layout.findViewById(R.id.bearing);
             bearing_layout.setText(mBearing);
 
-            DataToPhotoMerger dtpm = new DataToPhotoMerger(getApplicationContext(), ((BitmapDrawable) mMainImageView_Save.getDrawable()).getBitmap(), layout, mMainImageView_Save.getWidth(), mMainImageView_Save.getHeight(), mMainImageView_Save.getMatrix());
-            mMainImageView.setImageBitmap(dtpm.mBitmap);
+//   temp remove         DataToPhotoMerger dtpm = new DataToPhotoMerger(getApplicationContext(), ((BitmapDrawable) mMainImageView_Save.getDrawable()).getBitmap(), layout, mMainImageView_Save.getWidth(), mMainImageView_Save.getHeight(), mMainImageView_Save.getMatrix());
+//   temp remove         mMainImageView.setImageBitmap(dtpm.mBitmap);
 
             // Save Image automatically - TODO save after user input (OK Button)
-            helper_SaveLoadImage save = new helper_SaveLoadImage();
-            save.saveImage(getApplicationContext(), mMainImageView);
+//   temp remove         helper_SaveLoadImage save = new helper_SaveLoadImage();
+//   temp remove         save.saveImage(getApplicationContext(), mMainImageView);
         }
     }
 
