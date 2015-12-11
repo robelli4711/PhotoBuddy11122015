@@ -38,6 +38,11 @@ public class MoveMapSettings extends DialogFragment {
 
     private OnFragmentInteractionListener mListener;
 
+    RadioButton radioButton_left_up;
+    RadioButton radioButton_right_up;
+    RadioButton radioButton_right_down;
+    RadioButton radioButton_left_down;
+
     public MoveMapSettings() {
         // Required empty public constructor
     }
@@ -64,10 +69,17 @@ public class MoveMapSettings extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         inf = inflater.inflate(R.layout.fragment_move_map_settings, container, false);
         seekbar = (SeekBar)inf.findViewById(R.id.seekBar);
         mMainImageView = (ImageView) inf.findViewById(R.id.imageView4);
+
+        // get Controls
+        radioButton_left_up = (RadioButton) inf.findViewById(R.id.radioButton_left_up);
+        radioButton_right_up = (RadioButton)inf.findViewById(R.id.radioButton_right_up);
+        radioButton_right_down = (RadioButton)inf.findViewById(R.id.radioButton_right_down);
+        radioButton_left_down = (RadioButton)inf.findViewById(R.id.radioButton_left_down);
 
         // get Shared Preferences ready for Read/Write
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
@@ -78,17 +90,27 @@ public class MoveMapSettings extends DialogFragment {
         seekbar.setProgress((int) prefs.getFloat("map_settings_opaque", 100));
         mMainImageView.setAlpha((float) prefs.getFloat("map_settings_opaque", 100) / 100);
 
+        switch (prefs.getString("map_location", "")) {
+            case "TL":
+                radioButton_left_up.setChecked(true);
+                break;
+            case "TR":
+                radioButton_right_up.setChecked(true);
+                break;
+            case "BL":
+                radioButton_left_down.setChecked(true);
+                break;
+            case "BR":
+                radioButton_right_down.setChecked(true);
+                break;
+        }
+
         FloatingActionButton fab = (FloatingActionButton) inf.findViewById(R.id.ok_from_move_map_settings);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 // Map Location on the Image
-                RadioButton radioButton_left_up = (RadioButton) inf.findViewById(R.id.radioButton_left_up);
-                RadioButton radioButton_right_up = (RadioButton)inf.findViewById(R.id.radioButton_right_up);
-                RadioButton radioButton_right_down = (RadioButton)inf.findViewById(R.id.radioButton_right_down);
-                RadioButton radioButton_left_down = (RadioButton)inf.findViewById(R.id.radioButton_left_down);
-
                 if(radioButton_left_up.isChecked())
                     prefsedit.putString("map_location", "TL");
 

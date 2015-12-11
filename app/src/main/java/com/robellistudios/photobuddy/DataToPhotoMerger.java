@@ -81,14 +81,32 @@ public class DataToPhotoMerger extends BitmapDrawable {
 
     DataToPhotoMerger(final Context context, Bitmap background, Bitmap layout, int height, int width, Matrix matrix) {
 
+        int left = 500;
+        int top = 200;
+        int right = 600;
+        int bottom = 500;
+
         // get Settings for Size etc.
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        Log.d("PB***", "xxx");
+
+        switch (prefs.getString("map_location", "")) {
+
+            case "TL":
+                left = 50;
+                top = 50;
+                break;
+            case "TR":
+                break;
+            case "BL":
+                break;
+            case "BR":
+                break;
+        }
 
         // Merge Images
         Canvas c = new Canvas(layout);
         BitmapDrawable drawable2 = new BitmapDrawable(context.getResources(), layout);
-        drawable2.setBounds(500, 200, 800, 400);    // TODO dynamically change for the setting values
+        drawable2.setBounds(left, top, right, bottom);    // TODO dynamically change for the setting values
 
         // Merge Background with Layout
         Bitmap workingBitmap = Bitmap.createBitmap(background);
