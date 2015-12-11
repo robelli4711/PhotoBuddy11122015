@@ -164,12 +164,11 @@ public class MoveMapSettings extends DialogFragment {
                 if(radioButton_right_up.isChecked())
                     prefsedit.putString("map_location", "TR");
 
-
                 if(radioButton_right_down.isChecked())
                     prefsedit.putString("map_location", "BR");
 
                 if(radioButton_left_down.isChecked())
-                    prefs.edit().putString("map_location", "BL");
+                    prefsedit.putString("map_location", "BL");
 
                 prefsedit.commit();
 

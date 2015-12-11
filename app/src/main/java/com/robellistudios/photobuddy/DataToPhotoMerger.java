@@ -89,6 +89,9 @@ public class DataToPhotoMerger extends BitmapDrawable {
         // get Settings for Size etc.
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
+        Canvas c = new Canvas(layout);
+        BitmapDrawable drawable2 = new BitmapDrawable(context.getResources(), layout);
+
         switch (prefs.getString("map_location", "")) {
 
             case "TL":
@@ -96,19 +99,20 @@ public class DataToPhotoMerger extends BitmapDrawable {
                 top = 50;
                 break;
             case "TR":
-                left = layout.getScaledWidth(context.getResources().getDisplayMetrics().widthPixels) - 100;
+                left = background.getScaledWidth(context.getResources().getDisplayMetrics().densityDpi) - 450;
                 top = 50;
                 right = left + 450;
                 break;
             case "BL":
+                left = 50;
+                top = background.getScaledHeight(context.getResources().getDisplayMetrics().densityDpi) - 450;
+                bottom = (background.getScaledHeight(context.getResources().getDisplayMetrics().densityDpi) - 50);
                 break;
             case "BR":
                 break;
         }
 
         // Merge Images
-        Canvas c = new Canvas(layout);
-        BitmapDrawable drawable2 = new BitmapDrawable(context.getResources(), layout);
         drawable2.setBounds(left, top, right, bottom);    // TODO dynamically change for the setting values
 
         // Merge Background with Layout

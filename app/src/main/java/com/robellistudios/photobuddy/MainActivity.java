@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity
 
                 GeoMapFragment gfm = (GeoMapFragment)fragmentManager.findFragmentById(R.id.fragment_geo);
                 gfm.takeSnapshot();
-                DataToPhotoMerger dtpm = new DataToPhotoMerger(getApplicationContext(), ((BitmapDrawable) mMainImageView_Save.getDrawable()).getBitmap(), gfm.mMapSnapshot, mMainImageView_Save.getWidth(), mMainImageView_Save.getHeight(), mMainImageView_Save.getMatrix());
+                DataToPhotoMerger dtpm = new DataToPhotoMerger(getApplicationContext(), ((BitmapDrawable) mMainImageView.getDrawable()).getBitmap(), gfm.mMapSnapshot, mMainImageView_Save.getWidth(), mMainImageView_Save.getHeight(), mMainImageView_Save.getMatrix());
                 mMainImageView.setImageBitmap(dtpm.mBitmap);
 
                 setControls(true, true, false, true, true);
