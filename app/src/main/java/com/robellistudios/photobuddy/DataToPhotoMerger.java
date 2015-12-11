@@ -67,7 +67,10 @@ public class DataToPhotoMerger extends BitmapDrawable {
         drawable2.setBounds(150, 150, 500, 500);
 
         // Merge Background with Layout
-        Canvas c1 = new Canvas(background);
+        Bitmap workingBitmap = Bitmap.createBitmap(background);
+        Bitmap mutableBitmap = workingBitmap.copy(Bitmap.Config.ARGB_8888, true);
+
+        Canvas c1 = new Canvas(mutableBitmap);
         drawable2.draw(c1);
 
         mBitmap = workingBitmap;
@@ -87,6 +90,6 @@ public class DataToPhotoMerger extends BitmapDrawable {
         Canvas c1 = new Canvas(mutableBitmap);
         drawable2.draw(c1);
 
-        mBitmap = background;
+        mBitmap = mutableBitmap;
     }
 }
