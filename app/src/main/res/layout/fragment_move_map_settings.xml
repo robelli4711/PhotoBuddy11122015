@@ -11,149 +11,161 @@
     android:gravity="center"
     android:layoutMode="opticalBounds">
 
-    <ImageView
-            android:layout_width="fill_parent"
-            android:layout_height="150dp"
-            android:id="@+id/imageView4"
-            android:src="@mipmap/ic_landscape_1024_2048"
-            android:scaleType="centerCrop" />
-
-    <RadioGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true">
-
-    </RadioGroup>
-
-    <RadioGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true">
-
-    </RadioGroup>
-
-    <RadioGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:id="@+id/radioGroup">
-
-        <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/radioButton_right_up"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true" />
-    </RadioGroup>
-
-    <RadioGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignBottom="@+id/radioGroup">
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/radioButton_left_up" />
-
-    </RadioGroup>
-
-    <LinearLayout
-        android:orientation="vertical"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignWithParentIfMissing="true"
-        android:weightSum="1"
-        android:paddingTop="20dp"
-        android:layout_below="@+id/imageView4"
-        android:layout_alignParentStart="true"
-        android:id="@+id/linearLayout">
+        android:layout_height="match_parent">
 
-        <TextView
+        <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="150dp"
+                android:id="@+id/imageView4"
+                android:src="@mipmap/ic_landscape_1024_2048"
+                android:scaleType="centerCrop" />
+
+        <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Map Size"
-            android:id="@+id/textView3"
-            android:singleLine="true"
-            android:layout_gravity="left|top"
-            android:layout_below="@+id/radioButton_left_down"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentTop="false"
+            android:layout_alignParentEnd="false"
+            android:layout_alignLeft="@+id/imageView4"
+            android:layout_alignBottom="@+id/imageView4">
 
-        <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/radioButton2"
-                android:elegantTextHeight="false"
-                android:layout_alignParentStart="true"
-                android:text="Big"
-                android:layout_below="@+id/textView3"
-                android:layout_alignParentLeft="true" />
-
-        <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Medium"
-                android:id="@+id/radioButton"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/radioButton2"
-                android:layout_alignParentLeft="true" />
-
-        <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Small"
-                android:id="@+id/radioButton3"
-                android:layout_below="@+id/radioButton"
+            <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/radioButton_left_down"
+                android:layout_above="@+id/linearLayout"
                 android:layout_alignParentStart="true" />
+        </RadioGroup>
 
-        <TextView
+        <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Opaque"
-            android:id="@+id/textView4"
-            android:singleLine="true"
-            android:layout_gravity="left|top"
-            android:layout_below="@+id/radioButton_left_down"
-            android:layout_alignParentStart="true"
-            android:paddingTop="20dp" />
+            android:layout_alignParentRight="false"
+            android:layout_alignParentBottom="false"
+            android:layout_alignBottom="@+id/imageView4"
+            android:layout_alignRight="@+id/imageView4">
 
-        <SeekBar
+            <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/radioButton_right_down"
+                android:layout_alignBottom="@+id/imageView4"
+                android:layout_alignParentEnd="true" />
+        </RadioGroup>
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:id="@+id/radioGroup"
+            android:layout_alignTop="@+id/imageView4"
+            android:layout_alignRight="@+id/imageView4">
+
+            <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/radioButton_right_up"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true" />
+        </RadioGroup>
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignBottom="@+id/radioGroup"
+            android:layout_alignTop="@+id/imageView4"
+            android:layout_alignLeft="@+id/imageView4">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/radioButton_left_up" />
+
+        </RadioGroup>
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/seekBar"
-            android:max="100"
-            android:indeterminate="false"
-            android:paddingTop="10dp" />
+            android:layout_alignWithParentIfMissing="true"
+            android:weightSum="1"
+            android:paddingTop="20dp"
+            android:id="@+id/linearLayout"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true">
 
-        <android.support.design.widget.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/ok_from_move_map_settings"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/ic_ok" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Map Size"
+                android:id="@+id/textView3"
+                android:singleLine="true"
+                android:layout_gravity="left|top"
+                android:layout_below="@+id/radioButton_left_down"
+                android:layout_alignParentStart="true" />
 
-    </LinearLayout>
+            <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/radioButton2"
+                    android:elegantTextHeight="false"
+                    android:layout_alignParentStart="true"
+                    android:text="Big"
+                    android:layout_below="@+id/textView3"
+                    android:layout_alignParentLeft="true" />
 
-    <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/radioButton_right_down"
-        android:layout_alignBottom="@+id/imageView4"
-        android:layout_alignParentEnd="true" />
+            <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Medium"
+                    android:id="@+id/radioButton"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/radioButton2"
+                    android:layout_alignParentLeft="true" />
 
-    <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/radioButton_left_down"
-            android:layout_gravity="left|bottom"
-        android:layout_above="@+id/linearLayout"
-        android:layout_alignParentStart="true" />
+            <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Small"
+                    android:id="@+id/radioButton3"
+                    android:layout_below="@+id/radioButton"
+                    android:layout_alignParentStart="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Opaque"
+                android:id="@+id/textView4"
+                android:singleLine="true"
+                android:layout_gravity="left|top"
+                android:layout_below="@+id/radioButton_left_down"
+                android:layout_alignParentStart="true"
+                android:paddingTop="20dp" />
+
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/seekBar"
+                android:max="100"
+                android:indeterminate="false"
+                android:paddingTop="10dp" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ok_from_move_map_settings"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_ok" />
+
+        </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>
