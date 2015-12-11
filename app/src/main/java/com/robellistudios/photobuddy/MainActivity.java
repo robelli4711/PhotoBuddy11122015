@@ -98,9 +98,9 @@ public class MainActivity extends AppCompatActivity
         View fragment_geo = findViewById(R.id.fragment_geo);
         fragment_geo.setVisibility(View.INVISIBLE);
 
-        View start_map = findViewById(R.id.start_map);
+        final View start_map = findViewById(R.id.start_map);
         start_map.setVisibility(View.INVISIBLE);
-        View start_weather = findViewById(R.id.start_weather);
+        final View start_weather = findViewById(R.id.start_weather);
         start_weather.setVisibility(View.INVISIBLE);
 
         // get the BackgroudnImage
@@ -122,8 +122,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
-                View mapView = findViewById(R.id.fragment_geo);
-                mapView.setVisibility(View.VISIBLE);
+                setControls(true, false, false);
             }
         });
 
@@ -456,6 +455,32 @@ public class MainActivity extends AppCompatActivity
         View v1 = findViewById(R.id.fragment_geo);
         v1.setVisibility(View.INVISIBLE);
    }
+
+
+    private void setControls(boolean geoframgment, boolean map, boolean weather) {
+
+        View mapView = findViewById(R.id.fragment_geo);
+        View startmap = findViewById(R.id.start_map);
+        View startweather = findViewById(R.id.start_weather);
+
+        if(geoframgment) {
+            mapView.setVisibility(View.VISIBLE);
+        } else {
+            mapView.setVisibility(View.INVISIBLE);
+        }
+
+        if (map) {
+            startmap.setVisibility(View.VISIBLE);
+        } else {
+            startmap.setVisibility(View.INVISIBLE);
+        }
+
+        if (weather) {
+            startweather.setVisibility(View.VISIBLE);
+        } else {
+            startweather.setVisibility(View.INVISIBLE);
+        }
+    }
 
 
 
