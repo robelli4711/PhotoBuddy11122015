@@ -13,9 +13,11 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
@@ -39,10 +41,10 @@ public class MoveMapSettings extends DialogFragment {
 
     private OnFragmentInteractionListener mListener;
 
-    RadioButton radioButton_left_up;
-    RadioButton radioButton_right_up;
-    RadioButton radioButton_right_down;
-    RadioButton radioButton_left_down;
+    CheckBox radioButton_left_up;
+    CheckBox radioButton_right_up;
+    CheckBox radioButton_right_down;
+    CheckBox radioButton_left_down;
 
     public MoveMapSettings() {
         // Required empty public constructor
@@ -77,10 +79,10 @@ public class MoveMapSettings extends DialogFragment {
         mMainImageView = (ImageView) inf.findViewById(R.id.imageView4);
 
         // get Controls
-        radioButton_left_up = (RadioButton) inf.findViewById(R.id.radioButton_left_up);
-        radioButton_right_up = (RadioButton)inf.findViewById(R.id.radioButton_right_up);
-        radioButton_right_down = (RadioButton)inf.findViewById(R.id.radioButton_right_down);
-        radioButton_left_down = (RadioButton)inf.findViewById(R.id.radioButton_left_down);
+        radioButton_left_up = (CheckBox) inf.findViewById(R.id.radioButton_left_up);
+        radioButton_right_up = (CheckBox)inf.findViewById(R.id.radioButton_right_up);
+        radioButton_right_down = (CheckBox)inf.findViewById(R.id.radioButton_right_down);
+        radioButton_left_down = (CheckBox)inf.findViewById(R.id.radioButton_left_down);
 
         // get Shared Preferences ready for Read/Write
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
@@ -90,6 +92,9 @@ public class MoveMapSettings extends DialogFragment {
         getDialog().setTitle("Map settings");
         seekbar.setProgress((int) prefs.getFloat("map_settings_opaque", 100));
         mMainImageView.setAlpha((float) prefs.getFloat("map_settings_opaque", 100) / 100);
+
+        radioButton_left_up.setChecked(false); radioButton_left_down.setChecked(false);
+        radioButton_right_down.setChecked(false); radioButton_right_up.setChecked(false);
 
         switch (prefs.getString("map_location", "")) {
             case "TL":
@@ -106,15 +111,45 @@ public class MoveMapSettings extends DialogFragment {
                 break;
         }
 
-        radioButton_left_up.setOnCheckedChangeListener(OnCheckedChangeListener);
-
-
-        CompoundButton.OnCheckedChangeListener onRadioCheckedChangedListener = new CompoundButton.OnCheckedChangeListener() {
+        radioButton_left_up.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+            public void onClick(View v) {
+                radioButton_left_up.setChecked(true);
+                radioButton_left_down.setChecked(false);
+                radioButton_right_down.setChecked(false);
+                radioButton_right_up.setChecked(false);
             }
-        };
+        });
+
+        radioButton_left_down.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                radioButton_left_up.setChecked(false);
+                radioButton_left_down.setChecked(true);
+                radioButton_right_down.setChecked(false);
+                radioButton_right_up.setChecked(false);
+            }
+        });
+
+        radioButton_right_up.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                radioButton_left_up.setChecked(false);
+                radioButton_left_down.setChecked(false);
+                radioButton_right_down.setChecked(false);
+                radioButton_right_up.setChecked(true);
+            }
+        });
+
+        radioButton_right_down.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                radioButton_left_up.setChecked(false);
+                radioButton_left_down.setChecked(false);
+                radioButton_right_down.setChecked(true);
+                radioButton_right_up.setChecked(false);
+            }
+        });
 
 
         FloatingActionButton fab = (FloatingActionButton) inf.findViewById(R.id.ok_from_move_map_settings);

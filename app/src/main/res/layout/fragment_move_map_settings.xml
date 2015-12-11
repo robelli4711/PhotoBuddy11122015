@@ -22,76 +22,6 @@
                 android:src="@mipmap/ic_landscape_1024_2048"
                 android:scaleType="centerCrop" />
 
-        <RadioGroup
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="false"
-            android:layout_alignParentBottom="false"
-            android:layout_alignParentTop="false"
-            android:layout_alignParentEnd="false"
-            android:layout_alignLeft="@+id/imageView4"
-            android:layout_alignBottom="@+id/imageView4"
-            android:id="@+id/radiogroup_buttomleft">
-
-            <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/radioButton_left_down"
-                android:layout_above="@+id/linearLayout"
-                android:layout_alignParentStart="true" />
-        </RadioGroup>
-
-        <RadioGroup
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="false"
-            android:layout_alignParentBottom="false"
-            android:layout_alignBottom="@+id/imageView4"
-            android:layout_alignRight="@+id/imageView4"
-            android:id="@+id/radiogroup_buttomright">
-
-            <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/radioButton_right_down"
-                android:layout_alignBottom="@+id/imageView4"
-                android:layout_alignParentEnd="true" />
-        </RadioGroup>
-
-        <RadioGroup
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:id="@+id/radiogroup_topright"
-            android:layout_alignTop="@+id/imageView4"
-            android:layout_alignRight="@+id/imageView4">
-
-            <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/radioButton_right_up"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true" />
-        </RadioGroup>
-
-        <RadioGroup
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignBottom="@+id/radiogroup_topright"
-            android:layout_alignTop="@+id/imageView4"
-            android:layout_alignLeft="@+id/imageView4"
-            android:id="@+id/radiogroup_topleft">
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/radioButton_left_up" />
-
-        </RadioGroup>
-
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -100,7 +30,7 @@
             android:weightSum="1"
             android:paddingTop="20dp"
             android:id="@+id/linearLayout"
-            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/imageView4"
             android:layout_alignParentStart="true">
 
             <TextView
@@ -169,6 +99,36 @@
                 android:src="@drawable/ic_ok" />
 
         </LinearLayout>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/radioButton_left_down"
+            android:layout_alignBottom="@+id/imageView4"
+            android:layout_alignLeft="@+id/imageView4" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/radioButton_left_up"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/imageView4"
+            android:layout_alignLeft="@+id/imageView4" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/radioButton_right_up"
+            android:layout_alignTop="@+id/imageView4"
+            android:layout_alignRight="@+id/imageView4" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/radioButton_right_down"
+            android:layout_alignBottom="@+id/imageView4"
+            android:layout_alignRight="@+id/imageView4" />
     </RelativeLayout>
 
 </RelativeLayout>
