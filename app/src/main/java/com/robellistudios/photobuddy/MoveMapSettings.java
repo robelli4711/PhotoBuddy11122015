@@ -111,6 +111,23 @@ public class MoveMapSettings extends DialogFragment {
                 break;
         }
 
+        RadioGroup rg = (RadioGroup)inf.findViewById(R.id.radiogroup_size);
+        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                RadioButton big = (RadioButton)inf.findViewById(R.id.radioButton_big);
+                RadioButton med = (RadioButton)inf.findViewById(R.id.radioButton_medium);
+                RadioButton sma = (RadioButton)inf.findViewById(R.id.radioButton_small);
+
+                if (big.isChecked()) prefsedit.putString("map_size", "big");
+                if (med.isChecked()) prefsedit.putString("map_size", "medium");
+                if (sma.isChecked()) prefsedit.putString("map_size", "small");
+
+                prefsedit.commit();
+            }
+        });
+
         radioButton_left_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

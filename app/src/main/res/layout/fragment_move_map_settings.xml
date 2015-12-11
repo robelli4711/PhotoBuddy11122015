@@ -44,32 +44,38 @@
                 android:layout_below="@+id/radioButton_left_down"
                 android:layout_alignParentStart="true" />
 
-            <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/radioButton2"
-                    android:elegantTextHeight="false"
-                    android:layout_alignParentStart="true"
-                    android:text="Big"
-                    android:layout_below="@+id/textView3"
-                    android:layout_alignParentLeft="true" />
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/radiogroup_size">
 
-            <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Medium"
-                    android:id="@+id/radioButton"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@+id/radioButton2"
-                    android:layout_alignParentLeft="true" />
+                <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/radioButton_big"
+                        android:elegantTextHeight="false"
+                        android:layout_alignParentStart="true"
+                        android:text="Big"
+                        android:layout_below="@+id/textView3"
+                        android:layout_alignParentLeft="true" />
 
-            <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Small"
-                    android:id="@+id/radioButton3"
-                    android:layout_below="@+id/radioButton"
-                    android:layout_alignParentStart="true" />
+                <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Medium"
+                        android:id="@+id/radioButton_medium"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/radioButton_big"
+                        android:layout_alignParentLeft="true" />
+
+                <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Small"
+                        android:id="@+id/radioButton_small"
+                        android:layout_below="@+id/radioButton_medium"
+                        android:layout_alignParentStart="true" />
+            </RadioGroup>
 
             <TextView
                 android:layout_width="wrap_content"
