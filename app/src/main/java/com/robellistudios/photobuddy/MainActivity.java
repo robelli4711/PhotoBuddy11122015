@@ -168,6 +168,24 @@ public class MainActivity extends AppCompatActivity
         });
 
 
+        // tap Overtake Map and Settings
+        FloatingActionButton ok_geo_fragment = (FloatingActionButton) findViewById(com.robellistudios.photobuddy.R.id.ok_geo_fragment);
+        ok_geo_fragment.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                GeoMapFragment gfm = (GeoMapFragment)fragmentManager.findFragmentById(R.id.fragment_geo);
+                gfm.takeSnapshot();
+                DataToPhotoMerger dtpm = new DataToPhotoMerger(getApplicationContext(), ((BitmapDrawable) mMainImageView_Save.getDrawable()).getBitmap(), gfm.mMapSnapshot, mMainImageView_Save.getWidth(), mMainImageView_Save.getHeight(), mMainImageView_Save.getMatrix());
+                mMainImageView.setImageBitmap(dtpm.mBitmap);
+
+                setControls(true, true, false, true, true);
+            }
+        });
+
+
+
         // tap get Moving Settings
         FloatingActionButton movegeo = (FloatingActionButton) findViewById(com.robellistudios.photobuddy.R.id.move_geo_fragment);
         movegeo.setOnClickListener(new View.OnClickListener() {
@@ -463,9 +481,7 @@ public class MainActivity extends AppCompatActivity
         GeoMapFragment gfm = (GeoMapFragment)fragmentManager.findFragmentById(R.id.fragment_geo);
         DataToPhotoMerger dtpm = new DataToPhotoMerger(getApplicationContext(), ((BitmapDrawable) mMainImageView_Save.getDrawable()).getBitmap(), gfm.mMapSnapshot, mMainImageView_Save.getWidth(), mMainImageView_Save.getHeight(), mMainImageView_Save.getMatrix());
         mMainImageView.setImageBitmap(dtpm.mBitmap);
-
-        View v1 = findViewById(R.id.fragment_geo);
-        v1.setVisibility(View.INVISIBLE);
+        findViewById(R.id.fragment_geo).setVisibility(View.INVISIBLE);
    }
 
 

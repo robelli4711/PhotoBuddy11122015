@@ -177,9 +177,9 @@ public class GeoMapFragment extends Fragment {
 
     // Take Snapshot from GoogleMaps
     public void takeSnapshot() {
-        if (mMapView == null) {
-            return;
-        }
+//        if (mMapView == null) {
+//            return;
+//        }
 
         final GoogleMap.SnapshotReadyCallback callback = new GoogleMap.SnapshotReadyCallback() {
             @Override
