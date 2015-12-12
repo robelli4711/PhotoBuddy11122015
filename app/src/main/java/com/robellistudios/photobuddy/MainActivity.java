@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
 
                 findViewById(R.id.fragment_weatherchooser).setVisibility(View.VISIBLE);
-                setControls(true, true, false, true, true);
+                setControls(false, false, false, false, false);
             }
         });
 

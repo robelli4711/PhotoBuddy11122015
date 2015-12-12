@@ -6,9 +6,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 
 import com.robellistudios.photobuddy.R;
+
+import java.util.zip.Inflater;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +31,11 @@ public class WeatherLayoutChooser extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private CheckBox cb2;
+    private CheckBox cb3;
+    private CheckBox cb4;
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -65,7 +74,31 @@ public class WeatherLayoutChooser extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_weather_layout_chooser, container, false);
+        View inf = inflater.inflate(R.layout.fragment_weather_layout_chooser, container, false);
+
+        cb2 = (CheckBox) inf.findViewById(R.id.checkBox2);
+        cb3 = (CheckBox) inf.findViewById(R.id.checkBox3);
+        cb4 = (CheckBox) inf.findViewById(R.id.checkBox4);
+
+        cb2.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) { setCheckboxes(true, false, false);}
+        });
+
+        cb3.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) { setCheckboxes(false, true, false);}
+        });
+
+        cb4.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) { setCheckboxes(false, false, true);}
+        });
+
+        return inf;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -92,18 +125,15 @@ public class WeatherLayoutChooser extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private void setCheckboxes(boolean b2, boolean b3, boolean b4) {
+
+        cb2.setChecked(b2);
+        cb3.setChecked(b3);
+        cb4.setChecked(b4);
     }
 }
