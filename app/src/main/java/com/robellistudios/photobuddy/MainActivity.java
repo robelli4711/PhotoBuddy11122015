@@ -52,7 +52,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
                             implements NavigationView.OnNavigationItemSelectedListener,
-                                        WeatherSettings.OnFragmentInteractionListener,
+                                        WeatherLayoutChooser.OnFragmentInteractionListener,
                                         MoveMapSettings.OnFragmentInteractionListener {
 
     public static final String APP_TAG = "com.robellistudios.photobuddy"; // Application Tag
@@ -95,13 +95,10 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(com.robellistudios.photobuddy.R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        View fragment_geo = findViewById(R.id.fragment_geo);
-        fragment_geo.setVisibility(View.INVISIBLE);
-
-        final View start_map = findViewById(R.id.start_map);
-        start_map.setVisibility(View.INVISIBLE);
-        final View start_weather = findViewById(R.id.start_weather);
-        start_weather.setVisibility(View.INVISIBLE);
+        findViewById(R.id.fragment_geo).setVisibility(View.INVISIBLE);
+        findViewById(R.id.start_map).setVisibility(View.INVISIBLE);
+        findViewById(R.id.start_weather).setVisibility(View.INVISIBLE);
+        findViewById(R.id.fragment_weatherchooser).setVisibility(View.INVISIBLE);
 
         // get the BackgroudnImage
         mMainImageView = (ImageView) findViewById(com.robellistudios.photobuddy.R.id.imageView2);
@@ -151,6 +148,19 @@ public class MainActivity extends AppCompatActivity
                         Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(galleryIntent, RESULT_GALLERY);
+            }
+        });
+
+
+        // tap get Weather Chooser
+        final FloatingActionButton fragmentWeather = (FloatingActionButton) findViewById(R.id.start_weather);
+        fragmentWeather.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                findViewById(R.id.fragment_weatherchooser).setVisibility(View.VISIBLE);
+                setControls(true, true, false, true, true);
             }
         });
 
@@ -299,10 +309,8 @@ public class MainActivity extends AppCompatActivity
                         iv.setImageURI(data.getData());
                         mMainImageView = gh.RotateImage(getApplicationContext(), iv, data.getData().normalizeScheme());
 
-                        View startmap = findViewById(R.id.start_map);
-                        startmap.setVisibility(View.VISIBLE);
-                        View startweather = findViewById(R.id.start_weather);
-                        startweather.setVisibility(View.VISIBLE);
+                        findViewById(R.id.start_map).setVisibility(View.VISIBLE);
+                        findViewById(R.id.start_weather).setVisibility(View.VISIBLE);
 
                     } catch (IOException e) {
                         e.printStackTrace();
