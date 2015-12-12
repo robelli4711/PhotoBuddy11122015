@@ -1,17 +1,21 @@
 package com.robellistudios.photobuddy;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-
+import android.widget.FrameLayout;
 import com.robellistudios.photobuddy.R;
-
 import java.util.zip.Inflater;
 
 /**
@@ -35,7 +39,9 @@ public class WeatherLayoutChooser extends Fragment {
     private CheckBox cb2;
     private CheckBox cb3;
     private CheckBox cb4;
+    private FrameLayout me;
 
+    SharedPreferences prefs;
 
     private OnFragmentInteractionListener mListener;
 
@@ -73,29 +79,62 @@ public class WeatherLayoutChooser extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+        final SharedPreferences.Editor prefsedit = prefs.edit();
+
         // Inflate the layout for this fragment
         View inf = inflater.inflate(R.layout.fragment_weather_layout_chooser, container, false);
 
         cb2 = (CheckBox) inf.findViewById(R.id.checkBox2);
         cb3 = (CheckBox) inf.findViewById(R.id.checkBox3);
         cb4 = (CheckBox) inf.findViewById(R.id.checkBox4);
+        me = (FrameLayout) inf.findViewById(R.id.weatherlayoutchooser_content);
+
+
+        FloatingActionButton fab = (FloatingActionButton) inf.findViewById(R.id.weatherlayoutchooser_ok);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                me.setVisibility(View.INVISIBLE);
+
+                LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(
+                new Intent("WEATHERCHOOSER_FINISHED"));
+
+            }
+        });
+
 
         cb2.setOnClickListener(new OnClickListener() {
 
             @Override
-            public void onClick(View v) { setCheckboxes(true, false, false);}
+            public void onClick(View v) {
+                setCheckboxes(true, false, false);
+                prefsedit.putString("weather_layout", "layout2");
+                prefsedit.commit();
+            }
+
         });
 
         cb3.setOnClickListener(new OnClickListener() {
 
             @Override
-            public void onClick(View v) { setCheckboxes(false, true, false);}
+            public void onClick(View v) {
+                setCheckboxes(false, true, false);
+                prefsedit.putString("weather_layout", "layout3");
+                prefsedit.commit();
+            }
         });
 
         cb4.setOnClickListener(new OnClickListener() {
 
             @Override
-            public void onClick(View v) { setCheckboxes(false, false, true);}
+            public void onClick(View v) {
+                setCheckboxes(false, false, true);
+                prefsedit.putString("weather_layout", "layout4");
+                prefsedit.commit();
+            }
         });
 
         return inf;

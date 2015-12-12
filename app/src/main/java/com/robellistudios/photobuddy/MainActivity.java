@@ -86,6 +86,10 @@ public class MainActivity extends AppCompatActivity
 
         // Setup Broadcast Receiver
         localBroadcastReceiver = new LocalBroadcastReceiver();
+        IntentFilter filterMMS = new IntentFilter("MMS_FINISHED");
+        IntentFilter filterWLC = new IntentFilter("WEATHERCHOOSER_FINISHED");
+        LocalBroadcastManager.getInstance(this).registerReceiver(localBroadcastReceiver,filterMMS);
+        LocalBroadcastManager.getInstance(this).registerReceiver(localBroadcastReceiver,filterWLC);
 
         // initialising the object of the FragmentManager.
         fragmentManager = getSupportFragmentManager();
@@ -332,11 +336,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onPause() {
         super.onPause();
+        Log.i(APP_TAG, "PAUSED");
 
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(
-                localBroadcastReceiver);
-
-        Log.i(APP_TAG, "PAUSED deactivate Navi Listener");
+        // Unregister the Broadcast Listener
+//        if(localBroadcastReceiver)
+//            unregisterReceiver(localBroadcastReceiver);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
@@ -348,13 +352,14 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onResume() {
         super.onResume();
+        Log.d("PB ***", "RESUMED");
 
-        // reactivate Broadcast Listener
-        LocalBroadcastManager.getInstance(this).registerReceiver(
-                localBroadcastReceiver,
-                new IntentFilter("MMS_FINISHED"));
-
-        Log.d("PB ***", "RESUMED:activate Navgation Listener");
+        // Reregister the Brodcast Listener
+//        localBroadcastReceiver = new LocalBroadcastReceiver();
+//        IntentFilter filterMMS = new IntentFilter("MMS_FINISHED");
+//        IntentFilter filterWLC = new IntentFilter("WEATHERCHOOSER_FINISHED");
+//        LocalBroadcastManager.getInstance(this).registerReceiver(localBroadcastReceiver, filterMMS);
+//        LocalBroadcastManager.getInstance(this).registerReceiver(localBroadcastReceiver, filterWLC);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
@@ -615,6 +620,11 @@ public class MainActivity extends AppCompatActivity
             if (intent.getAction().equals("MMS_FINISHED")) {
                 setMapAfterSettings();
             }
+
+            if (intent.getAction().equals("WEATHERCHOOSER_FINISHED")) {
+                setControls(true, true, false, true, true);
+            }
+
         }
     }
 }

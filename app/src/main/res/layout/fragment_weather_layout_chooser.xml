@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     tools:context="com.robellistudios.photobuddy.WeatherLayoutChooser"
     android:background="#acffffff"
-    android:paddingTop="50dp">
+    android:paddingTop="50dp"
+    android:id="@+id/weatherlayoutchooser_content">
 
     <!-- TODO: Update blank fragment layout -->
 
