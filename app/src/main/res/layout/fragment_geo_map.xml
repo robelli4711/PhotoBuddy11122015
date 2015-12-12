@@ -11,7 +11,9 @@ android:layout_height="match_parent"
         android:id="@+id/mapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/ok_geo_fragment" />
+        android:layout_above="@+id/ok_geo_fragment"
+        android:paddingRight="50dp"
+        android:paddingLeft="50dp" />
 
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
@@ -28,7 +30,7 @@ android:layout_height="match_parent"
         android:id="@+id/move_geo_fragment"
         android:layout_below="@+id/mapView"
         android:layout_centerHorizontal="true"
-        android:src="@mipmap/ic_move" />
+        android:src="@drawable/ic_setting_dark" />
 
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
@@ -36,7 +38,7 @@ android:layout_height="match_parent"
         android:id="@+id/settings_geo_fragment"
         android:layout_alignBottom="@+id/move_geo_fragment"
         android:layout_alignEnd="@+id/mapView"
-        android:src="@drawable/ic_setting_dark" />
+        android:src="@drawable/ic_cancel" />
 </RelativeLayout>
 
 

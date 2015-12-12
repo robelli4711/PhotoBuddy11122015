@@ -13,7 +13,11 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
@@ -36,6 +40,11 @@ public class MoveMapSettings extends DialogFragment {
     private SharedPreferences.Editor prefsedit;
 
     private OnFragmentInteractionListener mListener;
+
+    CheckBox radioButton_left_up;
+    CheckBox radioButton_right_up;
+    CheckBox radioButton_right_down;
+    CheckBox radioButton_left_down;
 
     public MoveMapSettings() {
         // Required empty public constructor
@@ -63,10 +72,17 @@ public class MoveMapSettings extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         inf = inflater.inflate(R.layout.fragment_move_map_settings, container, false);
         seekbar = (SeekBar)inf.findViewById(R.id.seekBar);
         mMainImageView = (ImageView) inf.findViewById(R.id.imageView4);
+
+        // get Controls
+        radioButton_left_up = (CheckBox) inf.findViewById(R.id.radioButton_left_up);
+        radioButton_right_up = (CheckBox)inf.findViewById(R.id.radioButton_right_up);
+        radioButton_right_down = (CheckBox)inf.findViewById(R.id.radioButton_right_down);
+        radioButton_left_down = (CheckBox)inf.findViewById(R.id.radioButton_left_down);
 
         // get Shared Preferences ready for Read/Write
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
@@ -75,13 +91,119 @@ public class MoveMapSettings extends DialogFragment {
         // Setup Dialog
         getDialog().setTitle("Map settings");
         seekbar.setProgress((int) prefs.getFloat("map_settings_opaque", 100));
-        mMainImageView.setAlpha((float) prefs.getFloat("map_settings_opaque", 100) / 100);
+        mMainImageView.setAlpha(prefs.getFloat("map_settings_opaque", 100) / 100);
+
+        radioButton_left_up.setChecked(false); radioButton_left_down.setChecked(false);
+        radioButton_right_down.setChecked(false); radioButton_right_up.setChecked(false);
+
+        switch (prefs.getString("map_location", "")) {
+            case "TL":
+                radioButton_left_up.setChecked(true);
+                break;
+            case "TR":
+                radioButton_right_up.setChecked(true);
+                break;
+            case "BL":
+                radioButton_left_down.setChecked(true);
+                break;
+            case "BR":
+                radioButton_right_down.setChecked(true);
+                break;
+        }
+
+        RadioButton big = (RadioButton)inf.findViewById(R.id.radioButton_big);
+        RadioButton med = (RadioButton)inf.findViewById(R.id.radioButton_medium);
+        RadioButton sma = (RadioButton)inf.findViewById(R.id.radioButton_small);
+
+        switch(prefs.getString("map_size", "")) {
+            case "big":
+                big.setChecked(true);
+                break;
+            case "medium":
+                med.setChecked(true);
+                break;
+            case "small":
+                sma.setChecked(true);
+                break;
+        }
+
+        RadioGroup rg = (RadioGroup)inf.findViewById(R.id.radiogroup_size);
+        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                RadioButton big = (RadioButton)inf.findViewById(R.id.radioButton_big);
+                RadioButton med = (RadioButton)inf.findViewById(R.id.radioButton_medium);
+                RadioButton sma = (RadioButton)inf.findViewById(R.id.radioButton_small);
+
+                if (big.isChecked()) prefsedit.putString("map_size", "big");
+                if (med.isChecked()) prefsedit.putString("map_size", "medium");
+                if (sma.isChecked()) prefsedit.putString("map_size", "small");
+
+                prefsedit.commit();
+            }
+        });
+
+        radioButton_left_up.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                radioButton_left_up.setChecked(true);
+                radioButton_left_down.setChecked(false);
+                radioButton_right_down.setChecked(false);
+                radioButton_right_up.setChecked(false);
+            }
+        });
+
+        radioButton_left_down.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                radioButton_left_up.setChecked(false);
+                radioButton_left_down.setChecked(true);
+                radioButton_right_down.setChecked(false);
+                radioButton_right_up.setChecked(false);
+            }
+        });
+
+        radioButton_right_up.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                radioButton_left_up.setChecked(false);
+                radioButton_left_down.setChecked(false);
+                radioButton_right_down.setChecked(false);
+                radioButton_right_up.setChecked(true);
+            }
+        });
+
+        radioButton_right_down.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                radioButton_left_up.setChecked(false);
+                radioButton_left_down.setChecked(false);
+                radioButton_right_down.setChecked(true);
+                radioButton_right_up.setChecked(false);
+            }
+        });
+
 
         FloatingActionButton fab = (FloatingActionButton) inf.findViewById(R.id.ok_from_move_map_settings);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                // Map Location on the Image
+                if(radioButton_left_up.isChecked())
+                    prefsedit.putString("map_location", "TL");
+
+                if(radioButton_right_up.isChecked())
+                    prefsedit.putString("map_location", "TR");
+
+                if(radioButton_right_down.isChecked())
+                    prefsedit.putString("map_location", "BR");
+
+                if(radioButton_left_down.isChecked())
+                    prefsedit.putString("map_location", "BL");
+
+                prefsedit.commit();
                 dismiss();
             }
         });
@@ -130,10 +252,11 @@ public class MoveMapSettings extends DialogFragment {
     public void onDetach() {
         super.onDetach();
 
-        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(
-                new Intent("MMS_FINISHED"));
-
-        mListener = null;
+        // KEEP for further use ;-)
+//        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(
+//                new Intent("MMS_FINISHED"));
+//
+//        mListener = null;
     }
 
     public ImageView getmMainImageView() {

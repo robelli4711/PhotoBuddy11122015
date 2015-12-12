@@ -13,19 +13,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.robellistudios.photobuddy.R;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,17 +38,12 @@ public class GeoMapFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+//    private String mParam1;
+//    private String mParam2;
 
     public MapView mMapView;
     private GoogleMap googleMap;
     public Bitmap mMapSnapshot;
-
-    private RelativeLayout mMapContainer;
-
-    private static Double latitude, longitude;
-    private static float bearing;
 
     private OnFragmentInteractionListener mListener;
 
@@ -82,8 +73,8 @@ public class GeoMapFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+//            mParam1 = getArguments().getString(ARG_PARAM1);
+//            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -92,8 +83,6 @@ public class GeoMapFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_geo_map, container,
                 false);
-
-        RelativeLayout mMapContainer = (RelativeLayout)v.findViewById(R.id.mapView_container);
 
         mMapView = (MapView) v.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
@@ -107,18 +96,17 @@ public class GeoMapFragment extends Fragment {
         }
 
         googleMap = mMapView.getMap();
-        // latitude and longitude
-        LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
 
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
         }
 
-        Location location = locationManager.getLastKnownLocation(locationManager
-                .getBestProvider(criteria, false));
-        latitude = location.getLatitude();
-        longitude = location.getLongitude();
-        bearing = location.getBearing();
+        LocationManager lm = (LocationManager) getActivity().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        String bestProvider = lm.getBestProvider(criteria, false);
+        Location location = lm.getLastKnownLocation(bestProvider);
+        Double latitude = location.getLatitude();
+        Double longitude = location.getLongitude();
+        float bearing = location.getBearing();
 
         // create marker
         MarkerOptions marker = new MarkerOptions().position(
@@ -177,9 +165,9 @@ public class GeoMapFragment extends Fragment {
 
     // Take Snapshot from GoogleMaps
     public void takeSnapshot() {
-        if (mMapView == null) {
-            return;
-        }
+//        if (mMapView == null) {
+//            return;
+//        }
 
         final GoogleMap.SnapshotReadyCallback callback = new GoogleMap.SnapshotReadyCallback() {
             @Override

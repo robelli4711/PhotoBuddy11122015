@@ -1,39 +1,29 @@
 package com.robellistudios.photobuddy;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.widget.ImageView;
-
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.util.ArrayList;
 
 public class GeneralHelpers {
 
-    /**
-     * Rotates the Image as in EXIF described
-     * @param ImageView - img
-     * @param path
-     * @return Bitmap - the rotated Image
-     */
     public ImageView RotateImage(Context context, ImageView img, Uri path) throws IOException {
 
         InputStream is = context.getContentResolver().openInputStream(path);
         BitmapFactory.Options dbo = new BitmapFactory.Options();
         dbo.inJustDecodeBounds = true;
         BitmapFactory.decodeStream(is, null, dbo);
+        assert is != null;
         is.close();
 
         int rotatedWidth, rotatedHeight;
@@ -68,6 +58,8 @@ public class GeneralHelpers {
         } else {
             srcBitmap = BitmapFactory.decodeStream(is);
         }
+
+        assert is != null;
         is.close();
 
     /*
@@ -93,6 +85,8 @@ public class GeneralHelpers {
         int orientation = -1;
         Cursor cursor = context.getContentResolver().query(selectedImage,
                 new String[] { MediaStore.Images.ImageColumns.ORIENTATION }, null, null, null);
+
+        assert cursor != null;
         if (cursor.getCount() != 1)
             return orientation;
 
@@ -104,34 +98,6 @@ public class GeneralHelpers {
 
 
     /**
-     * @param context
-     * @param data
-     * @return
-     */
-    public static String getRealPathFromURI(Context context, String data) {
-
-        String[] largeFileProjection = { MediaStore.Images.ImageColumns._ID,
-                MediaStore.Images.ImageColumns.DATA };
-
-        String largeFileSort = MediaStore.Images.ImageColumns._ID + " DESC";
-        Cursor myCursor = context.getContentResolver().query(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                largeFileProjection, null, null, largeFileSort);
-        String largeImagePath = "";
-        try {
-            myCursor.moveToFirst();
-            largeImagePath = myCursor
-                    .getString(myCursor
-                            .getColumnIndexOrThrow(MediaStore.Images.ImageColumns.DATA));
-        } finally {
-            myCursor.close();
-        }
-
-        return largeImagePath;
-    }
-
-
-    /**
      * Get the last know Position from Shared Preferences
      * The ArrayList will return
      * 0. Latitude
@@ -139,9 +105,6 @@ public class GeneralHelpers {
      * 2. Altitude
      * 3. Bearing
      * 4. Accuracy
-     *
-     * @param context
-     * @return  ArrayList
      */
     public ArrayList getLastLocation(Context context) {
 
