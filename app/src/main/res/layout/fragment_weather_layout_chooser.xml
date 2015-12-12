@@ -7,27 +7,75 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <include
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        layout="@layout/temperature_output_1"
-        android:layout_gravity="left|top" />
+        android:layout_height="wrap_content">
 
-    <include
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        layout="@layout/temperature_output_2"
-        android:layout_gravity="right|top" />
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkBox1" />
 
-    <include
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        layout="@layout/temperature_output_3"
-        android:layout_gravity="left|center_vertical" />
+        <include
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            layout="@layout/temperature_output_1" />
+    </RelativeLayout>
 
-    <include
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        layout="@layout/temperature_output_4"
-        android:layout_gravity="right|center_vertical" />
+        android:layout_gravity="right|top">
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkBox2"
+            android:layout_gravity="left|top" />
+
+        <include
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            layout="@layout/temperature_output_2"
+            android:layout_gravity="right|top"
+            android:layout_alignParentEnd="false" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|left">
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkBox3"
+            android:layout_gravity="left|center_vertical" />
+
+        <include
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            layout="@layout/temperature_output_3"
+            android:layout_gravity="left|center_vertical" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|right">
+
+        <include
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            layout="@layout/temperature_output_4"
+            android:layout_gravity="right|center_vertical" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkBox4" />
+    </RelativeLayout>
+
 </FrameLayout>
