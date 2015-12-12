@@ -1,8 +1,6 @@
 package com.robellistudios.photobuddy;
 
 import android.Manifest;
-import android.app.DialogFragment;
-import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -21,9 +19,7 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +31,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewOverlay;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
@@ -72,11 +67,12 @@ public class MainActivity extends AppCompatActivity
     private static double mLat;
     private static double mLon;
 
-    private String mTemperature;
-    private String mCondition;
-    private String mHumidity;
-    private String mWind;
-    private String mBearing;
+    // Temperature holders must be in Global
+    private String mTemperature = "n/a";
+    private String mCondition = "n/a";
+    private String mHumidity = "n/a";
+    private String mWind = "n/a";
+    private String mBearing = "n/a";
 
     private ImageView mMainImageView;                // Main ImageView
     private ImageView mMainImageView_Save;            // save of the Original Image
@@ -91,6 +87,14 @@ public class MainActivity extends AppCompatActivity
         IntentFilter filterWLC = new IntentFilter("WEATHERCHOOSER_FINISHED");
         LocalBroadcastManager.getInstance(this).registerReceiver(localBroadcastReceiver,filterMMS);
         LocalBroadcastManager.getInstance(this).registerReceiver(localBroadcastReceiver,filterWLC);
+
+        // startup GPS to be ready
+        mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        }
+        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
+                LOCATION_REFRESH_DISTANCE, mLocationListener);
+
 
         // initialising the object of the FragmentManager.
         fragmentManager = getSupportFragmentManager();
@@ -109,14 +113,6 @@ public class MainActivity extends AppCompatActivity
         mMainImageView = (ImageView) findViewById(com.robellistudios.photobuddy.R.id.imageView2);
         mMainImageView_Save = mMainImageView;       // make a copy of the Original Image
         scaleImage(mMainImageView, 2048);
-
-        // startup GPS to be ready
-        mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-        }
-        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
-                LOCATION_REFRESH_DISTANCE, mLocationListener);
-
 
         // tap start Map Handling
         FloatingActionButton map = (FloatingActionButton) findViewById(R.id.start_map);
@@ -509,6 +505,7 @@ public class MainActivity extends AppCompatActivity
         TableLayout tl=null;
         LayoutInflater inflater;
         inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        TextView temp; TextView cond; TextView humi; TextView wind; TextView bear;
 
         switch(prefs.getString("weather_layout", "")) {
             case "layout2":
@@ -522,6 +519,18 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
 
+        temp = (TextView)tl.findViewById(R.id.temperature);
+        cond = (TextView)tl.findViewById(R.id.condition);
+        humi = (TextView)tl.findViewById(R.id.humidity);
+        wind = (TextView)tl.findViewById(R.id.wind);
+        bear = (TextView)tl.findViewById(R.id.bearing);
+
+        temp.setText(mTemperature);
+        cond.setText(mCondition);
+        humi.setText(mHumidity);
+        wind.setText(mWind);
+        bear.setText(mBearing);
+        
         DataToPhotoMerger dtpm = new DataToPhotoMerger(getApplicationContext(), ((BitmapDrawable) mMainImageView_Save.getDrawable()).getBitmap(), tl, mMainImageView_Save.getWidth(), mMainImageView_Save.getHeight(), mMainImageView_Save.getMatrix());
         mMainImageView.setImageBitmap(dtpm.mBitmap);
         setControls(true, true, false, true, true);
@@ -609,20 +618,20 @@ public class MainActivity extends AppCompatActivity
             }
 
             // get the Weather Output Layout and fill it
-            LayoutInflater inflater;
-            inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            TableLayout layout = (TableLayout) inflater.inflate(R.layout.temperature_output_1, null);
-
-            TextView temp_layout = (TextView) layout.findViewById(R.id.temperature);
-            temp_layout.setText(mTemperature);
-            TextView condition_layout = (TextView) layout.findViewById(R.id.condition);
-            condition_layout.setText(mCondition);
-            TextView humidity_layout = (TextView) layout.findViewById(R.id.humidity);
-            humidity_layout.setText(mHumidity);
-            TextView wind_layout = (TextView) layout.findViewById(R.id.wind);
-            wind_layout.setText(mWind);
-            TextView bearing_layout = (TextView) layout.findViewById(R.id.bearing);
-            bearing_layout.setText(mBearing);
+//            LayoutInflater inflater;
+//            inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//            TableLayout layout = (TableLayout) inflater.inflate(R.layout.temperature_output_1, null);
+//
+//            TextView temp_layout = (TextView) layout.findViewById(R.id.temperature);
+//            temp_layout.setText(mTemperature);
+//            TextView condition_layout = (TextView) layout.findViewById(R.id.condition);
+//            condition_layout.setText(mCondition);
+//            TextView humidity_layout = (TextView) layout.findViewById(R.id.humidity);
+//            humidity_layout.setText(mHumidity);
+//            TextView wind_layout = (TextView) layout.findViewById(R.id.wind);
+//            wind_layout.setText(mWind);
+//            TextView bearing_layout = (TextView) layout.findViewById(R.id.bearing);
+//            bearing_layout.setText(mBearing);
 
 //   temp remove         DataToPhotoMerger dtpm = new DataToPhotoMerger(getApplicationContext(), ((BitmapDrawable) mMainImageView_Save.getDrawable()).getBitmap(), layout, mMainImageView_Save.getWidth(), mMainImageView_Save.getHeight(), mMainImageView_Save.getMatrix());
 //   temp remove         mMainImageView.setImageBitmap(dtpm.mBitmap);
