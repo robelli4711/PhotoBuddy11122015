@@ -23,6 +23,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -501,6 +502,34 @@ public class MainActivity extends AppCompatActivity
    }
 
 
+    public void setWeatherAfterSettings() {
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        TableLayout tl=null;
+        LayoutInflater inflater;
+        inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        switch(prefs.getString("weather_layout", "")) {
+            case "layout2":
+                tl = (TableLayout) inflater.inflate(R.layout.temperature_output_2, null);
+                break;
+            case "layout3":
+                tl = (TableLayout) inflater.inflate(R.layout.temperature_output_3, null);
+                break;
+            case "layout4":
+                tl = (TableLayout) inflater.inflate(R.layout.temperature_output_4, null);
+                break;
+        }
+
+        DataToPhotoMerger dtpm = new DataToPhotoMerger(getApplicationContext(), ((BitmapDrawable) mMainImageView_Save.getDrawable()).getBitmap(), tl, mMainImageView_Save.getWidth(), mMainImageView_Save.getHeight(), mMainImageView_Save.getMatrix());
+        mMainImageView.setImageBitmap(dtpm.mBitmap);
+        setControls(true, true, false, true, true);
+    }
+
+
+
+
     private void setControls(boolean album, boolean camera, boolean geoframgment, boolean map, boolean weather) {
 
 //        View mapView = findViewById(R.id.fragment_geo);
@@ -622,7 +651,7 @@ public class MainActivity extends AppCompatActivity
             }
 
             if (intent.getAction().equals("WEATHERCHOOSER_FINISHED")) {
-                setControls(true, true, false, true, true);
+                setWeatherAfterSettings();
             }
 
         }
