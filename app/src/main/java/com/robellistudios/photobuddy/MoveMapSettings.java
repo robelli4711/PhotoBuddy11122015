@@ -204,7 +204,6 @@ public class MoveMapSettings extends DialogFragment {
                     prefsedit.putString("map_location", "BL");
 
                 prefsedit.commit();
-
                 dismiss();
             }
         });
@@ -253,10 +252,11 @@ public class MoveMapSettings extends DialogFragment {
     public void onDetach() {
         super.onDetach();
 
-        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(
-                new Intent("MMS_FINISHED"));
-
-        mListener = null;
+        // KEEP for further use ;-)
+//        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(
+//                new Intent("MMS_FINISHED"));
+//
+//        mListener = null;
     }
 
     public ImageView getmMainImageView() {

@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity
 
 
 
-        // tap get Moving Settings
+        // tap get Map Settings
         FloatingActionButton movegeo = (FloatingActionButton) findViewById(com.robellistudios.photobuddy.R.id.move_geo_fragment);
         movegeo.setOnClickListener(new View.OnClickListener() {
 
@@ -341,9 +341,11 @@ public class MainActivity extends AppCompatActivity
     public void onResume() {
         super.onResume();
 
+        // reactivate Broadcast Listener
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 localBroadcastReceiver,
                 new IntentFilter("MMS_FINISHED"));
+
         Log.d("PB ***", "RESUMED:activate Navgation Listener");
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -480,7 +482,9 @@ public class MainActivity extends AppCompatActivity
         GeoMapFragment gfm = (GeoMapFragment)fragmentManager.findFragmentById(R.id.fragment_geo);
         DataToPhotoMerger dtpm = new DataToPhotoMerger(getApplicationContext(), ((BitmapDrawable) mMainImageView_Save.getDrawable()).getBitmap(), gfm.mMapSnapshot, mMainImageView_Save.getWidth(), mMainImageView_Save.getHeight(), mMainImageView_Save.getMatrix());
         mMainImageView.setImageBitmap(dtpm.mBitmap);
+
         findViewById(R.id.fragment_geo).setVisibility(View.INVISIBLE);
+        setControls(true, true, false, true, true);
    }
 
 
