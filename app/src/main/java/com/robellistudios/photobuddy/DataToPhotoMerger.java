@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -133,6 +134,12 @@ public class DataToPhotoMerger extends BitmapDrawable {
         }
 
         // Merge Images
+        if(layout == null) {
+            Toast.makeText(context, "no Map Snapshot available", Toast.LENGTH_LONG).show();
+            mBitmap = background;
+            return;
+        }
+
         Canvas c = new Canvas(layout);
         BitmapDrawable drawable2 = new BitmapDrawable(context.getResources(), layout);
         drawable2.setBounds(left, top, right, bottom);
