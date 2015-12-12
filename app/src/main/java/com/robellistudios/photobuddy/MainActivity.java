@@ -98,8 +98,9 @@ public class MainActivity extends AppCompatActivity
         findViewById(R.id.start_map).setVisibility(View.INVISIBLE);
         findViewById(R.id.start_weather).setVisibility(View.INVISIBLE);
         findViewById(R.id.fragment_weatherchooser).setVisibility(View.INVISIBLE);
+        findViewById(R.id.save).setVisibility(View.INVISIBLE);
 
-        // get the BackgroudnImage
+        // get the Background Image
         mMainImageView = (ImageView) findViewById(com.robellistudios.photobuddy.R.id.imageView2);
         mMainImageView_Save = mMainImageView;       // make a copy of the Original Image
         scaleImage(mMainImageView, 2048);
@@ -109,10 +110,21 @@ public class MainActivity extends AppCompatActivity
         map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setControls(false, false, true, false, false);
+                setControls(false, false, true, false, false, true);
             }
         });
 
+
+        // tap save Image
+        FloatingActionButton save = (FloatingActionButton) findViewById(R.id.save);
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                helper_SaveLoadImage help = new helper_SaveLoadImage();
+                help.saveImage(getApplicationContext(), mMainImageView);
+            }
+        });
 
         // tap make photo
         FloatingActionButton fab = (FloatingActionButton) findViewById(com.robellistudios.photobuddy.R.id.fab);
@@ -151,7 +163,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
 
                 findViewById(R.id.fragment_weatherchooser).setVisibility(View.VISIBLE);
-                setControls(false, false, false, false, false);
+                setControls(false, false, false, false, false, true);
             }
         });
 
@@ -164,7 +176,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
 
                 findViewById(R.id.fragment_geo).setVisibility(View.INVISIBLE);
-                setControls(true, true, false, true, true);
+                setControls(true, true, false, true, true, true);
             }
         });
 
@@ -181,7 +193,7 @@ public class MainActivity extends AppCompatActivity
                 DataToPhotoMerger dtpm = new DataToPhotoMerger(getApplicationContext(), ((BitmapDrawable) mMainImageView.getDrawable()).getBitmap(), gfm.mMapSnapshot);
                 mMainImageView.setImageBitmap(dtpm.mBitmap);
 
-                setControls(true, true, false, true, true);
+                setControls(true, true, false, true, true, true);
             }
         });
 
@@ -470,7 +482,7 @@ public class MainActivity extends AppCompatActivity
         mMainImageView.setImageBitmap(dtpm.mBitmap);
 
         findViewById(R.id.fragment_geo).setVisibility(View.INVISIBLE);
-        setControls(true, true, false, true, true);
+        setControls(true, true, false, true, true, true);
    }
 
 
@@ -510,11 +522,11 @@ public class MainActivity extends AppCompatActivity
 
         DataToPhotoMerger dtpm = new DataToPhotoMerger(getApplicationContext(), ((BitmapDrawable) mMainImageView_Save.getDrawable()).getBitmap(), tl, mMainImageView_Save.getWidth(), mMainImageView_Save.getHeight(), mMainImageView_Save.getMatrix());
         mMainImageView.setImageBitmap(dtpm.mBitmap);
-        setControls(true, true, false, true, true);
+        setControls(true, true, false, true, true, true);
     }
 
 
-    private void setControls(boolean album, boolean camera, boolean geoframgment, boolean map, boolean weather) {
+    private void setControls(boolean album, boolean camera, boolean geoframgment, boolean map, boolean weather, boolean save) {
 
         if(album) {
             findViewById(R.id.alb).setVisibility(View.VISIBLE);
@@ -544,6 +556,12 @@ public class MainActivity extends AppCompatActivity
             findViewById(R.id.start_weather).setVisibility(View.VISIBLE);
         } else {
             findViewById(R.id.start_weather).setVisibility(View.INVISIBLE);
+        }
+
+        if (save) {
+            findViewById(R.id.save).setVisibility(View.VISIBLE);
+        } else {
+            findViewById(R.id.save).setVisibility(View.INVISIBLE);
         }
     }
 
