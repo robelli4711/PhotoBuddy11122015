@@ -36,12 +36,8 @@ import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-
 import org.json.JSONException;
-
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -57,11 +53,7 @@ public class MainActivity extends AppCompatActivity
     public static final int LOCATION_REFRESH_TIME = 1000; // refresh time GPS
     public static final int LOCATION_REFRESH_DISTANCE = 10; // refresh distance GPS
 
-    private static final int CONTENT_VIEW_ID = 10101010;
-
     public static android.support.v4.app.FragmentManager fragmentManager;
-    private BroadcastReceiver localBroadcastReceiver;
-
     LocationManager mLocationManager;
     String city = "Athens,GR";
     private static double mLat;
@@ -82,7 +74,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         // Setup Broadcast Receiver
-        localBroadcastReceiver = new LocalBroadcastReceiver();
+        BroadcastReceiver localBroadcastReceiver = new LocalBroadcastReceiver();
         IntentFilter filterMMS = new IntentFilter("MMS_FINISHED");
         IntentFilter filterWLC = new IntentFilter("WEATHERCHOOSER_FINISHED");
         LocalBroadcastManager.getInstance(this).registerReceiver(localBroadcastReceiver,filterMMS);
@@ -90,8 +82,6 @@ public class MainActivity extends AppCompatActivity
 
         // startup GPS to be ready
         mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-        }
         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
                 LOCATION_REFRESH_DISTANCE, mLocationListener);
 
@@ -188,7 +178,7 @@ public class MainActivity extends AppCompatActivity
 
                 GeoMapFragment gfm = (GeoMapFragment)fragmentManager.findFragmentById(R.id.fragment_geo);
                 gfm.takeSnapshot();
-                DataToPhotoMerger dtpm = new DataToPhotoMerger(getApplicationContext(), ((BitmapDrawable) mMainImageView.getDrawable()).getBitmap(), gfm.mMapSnapshot, mMainImageView_Save.getWidth(), mMainImageView_Save.getHeight(), mMainImageView_Save.getMatrix());
+                DataToPhotoMerger dtpm = new DataToPhotoMerger(getApplicationContext(), ((BitmapDrawable) mMainImageView.getDrawable()).getBitmap(), gfm.mMapSnapshot);
                 mMainImageView.setImageBitmap(dtpm.mBitmap);
 
                 setControls(true, true, false, true, true);
@@ -204,12 +194,11 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
-                GoogleMap.SnapshotReadyCallback callback = new GoogleMap.SnapshotReadyCallback() {
+                new GoogleMap.SnapshotReadyCallback() {
                     Bitmap bitmap;
 
                     @Override
                     public void onSnapshotReady(Bitmap snapshot) {
-                        // TODO Auto-generated method stub
                         bitmap = snapshot;
                     }
                 };
@@ -239,15 +228,14 @@ public class MainActivity extends AppCompatActivity
             task.execute(city);
 
             if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return;
             } else {
 
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 prefs.edit().putFloat("geo_maps_lat", (float) location.getLatitude()).apply();
                 prefs.edit().putFloat("geo_maps_lon", (float) location.getLongitude()).apply();
                 prefs.edit().putFloat("geo_maps_alt", (float) location.getAltitude()).apply();
-                prefs.edit().putFloat("geo_maps_bearing", (float) location.getBearing()).apply();
-                prefs.edit().putFloat("geo_maps_accuracy", (float) location.getAccuracy()).apply();
+                prefs.edit().putFloat("geo_maps_bearing", location.getBearing()).apply();
+                prefs.edit().putFloat("geo_maps_accuracy", location.getAccuracy()).apply();
 
                 // Stop Location Manager to save Power and Resources
                 mLocationManager.removeUpdates(mLocationListener);
@@ -269,7 +257,6 @@ public class MainActivity extends AppCompatActivity
 
             Log.e("PB", "Povider disabled");
             if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return;
             } else {
 
                 // try to get last known position
@@ -340,7 +327,6 @@ public class MainActivity extends AppCompatActivity
 //            unregisterReceiver(localBroadcastReceiver);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
         } else {
             mLocationManager.removeUpdates(mLocationListener);
         }
@@ -359,7 +345,6 @@ public class MainActivity extends AppCompatActivity
 //        LocalBroadcastManager.getInstance(this).registerReceiver(localBroadcastReceiver, filterWLC);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
         } else {
             mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
                     LOCATION_REFRESH_DISTANCE, mLocationListener);
@@ -430,8 +415,8 @@ public class MainActivity extends AppCompatActivity
 
     /**
      * Scale Image - set the correct Scaling for the Image
-     * @param view
-     * @param boundBoxInDp
+     * @param view ImageView to be scaled
+     * @param boundBoxInDp DPI
      * @return Scaled ImageView
      */
     private ImageView scaleImage(ImageView view, int boundBoxInDp)
@@ -473,15 +458,6 @@ public class MainActivity extends AppCompatActivity
         return view;
     }
 
-    /**
-     * @param dp
-     * @return Pixels in int
-     */
-    private int dpToPx(int dp)
-    {
-        float density = getApplicationContext().getResources().getDisplayMetrics().density;
-        return Math.round((float)dp * (density));
-    }
 
     public void setMapAfterSettings() {
 
@@ -490,7 +466,7 @@ public class MainActivity extends AppCompatActivity
         fragment_geo.setAlpha(prefs.getFloat("map_settings_opaque", 100));
 
         GeoMapFragment gfm = (GeoMapFragment)fragmentManager.findFragmentById(R.id.fragment_geo);
-        DataToPhotoMerger dtpm = new DataToPhotoMerger(getApplicationContext(), ((BitmapDrawable) mMainImageView_Save.getDrawable()).getBitmap(), gfm.mMapSnapshot, mMainImageView_Save.getWidth(), mMainImageView_Save.getHeight(), mMainImageView_Save.getMatrix());
+        DataToPhotoMerger dtpm = new DataToPhotoMerger(getApplicationContext(), ((BitmapDrawable) mMainImageView_Save.getDrawable()).getBitmap(), gfm.mMapSnapshot);
         mMainImageView.setImageBitmap(dtpm.mBitmap);
 
         findViewById(R.id.fragment_geo).setVisibility(View.INVISIBLE);
@@ -519,6 +495,7 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
 
+        assert tl != null;
         temp = (TextView)tl.findViewById(R.id.temperature);
         cond = (TextView)tl.findViewById(R.id.condition);
         humi = (TextView)tl.findViewById(R.id.humidity);
@@ -530,22 +507,14 @@ public class MainActivity extends AppCompatActivity
         humi.setText(mHumidity);
         wind.setText(mWind);
         bear.setText(mBearing);
-        
+
         DataToPhotoMerger dtpm = new DataToPhotoMerger(getApplicationContext(), ((BitmapDrawable) mMainImageView_Save.getDrawable()).getBitmap(), tl, mMainImageView_Save.getWidth(), mMainImageView_Save.getHeight(), mMainImageView_Save.getMatrix());
         mMainImageView.setImageBitmap(dtpm.mBitmap);
         setControls(true, true, false, true, true);
     }
 
 
-
-
     private void setControls(boolean album, boolean camera, boolean geoframgment, boolean map, boolean weather) {
-
-//        View mapView = findViewById(R.id.fragment_geo);
-//        View startmap = findViewById(R.id.start_map);
-//        View startweather = findViewById(R.id.start_weather);
-//        View albumView = findViewById(R.id.alb);
-//        View cameraView = findViewById(R.id.fab);
 
         if(album) {
             findViewById(R.id.alb).setVisibility(View.VISIBLE);
@@ -616,29 +585,6 @@ public class MainActivity extends AppCompatActivity
                 mWind = String.format("%.2f km/h", weather.wind.getSpeed());
                 mBearing = String.format("%.2f\u00B0", weather.wind.getDeg());
             }
-
-            // get the Weather Output Layout and fill it
-//            LayoutInflater inflater;
-//            inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//            TableLayout layout = (TableLayout) inflater.inflate(R.layout.temperature_output_1, null);
-//
-//            TextView temp_layout = (TextView) layout.findViewById(R.id.temperature);
-//            temp_layout.setText(mTemperature);
-//            TextView condition_layout = (TextView) layout.findViewById(R.id.condition);
-//            condition_layout.setText(mCondition);
-//            TextView humidity_layout = (TextView) layout.findViewById(R.id.humidity);
-//            humidity_layout.setText(mHumidity);
-//            TextView wind_layout = (TextView) layout.findViewById(R.id.wind);
-//            wind_layout.setText(mWind);
-//            TextView bearing_layout = (TextView) layout.findViewById(R.id.bearing);
-//            bearing_layout.setText(mBearing);
-
-//   temp remove         DataToPhotoMerger dtpm = new DataToPhotoMerger(getApplicationContext(), ((BitmapDrawable) mMainImageView_Save.getDrawable()).getBitmap(), layout, mMainImageView_Save.getWidth(), mMainImageView_Save.getHeight(), mMainImageView_Save.getMatrix());
-//   temp remove         mMainImageView.setImageBitmap(dtpm.mBitmap);
-
-            // Save Image automatically - TODO save after user input (OK Button)
-//   temp remove         helper_SaveLoadImage save = new helper_SaveLoadImage();
-//   temp remove         save.saveImage(getApplicationContext(), mMainImageView);
         }
     }
 

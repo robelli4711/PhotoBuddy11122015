@@ -91,7 +91,7 @@ public class MoveMapSettings extends DialogFragment {
         // Setup Dialog
         getDialog().setTitle("Map settings");
         seekbar.setProgress((int) prefs.getFloat("map_settings_opaque", 100));
-        mMainImageView.setAlpha((float) prefs.getFloat("map_settings_opaque", 100) / 100);
+        mMainImageView.setAlpha(prefs.getFloat("map_settings_opaque", 100) / 100);
 
         radioButton_left_up.setChecked(false); radioButton_left_down.setChecked(false);
         radioButton_right_down.setChecked(false); radioButton_right_up.setChecked(false);
