@@ -2,12 +2,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.robellistudios.photobuddy.WeatherLayoutChooser">
+    tools:context="com.robellistudios.photobuddy.WeatherLayoutChooser"
+    android:background="#acffffff">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
+    <include
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        layout="@layout/temperature_output_1"
+        android:layout_gravity="left|top" />
+
+    <include
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        layout="@layout/temperature_output_2"
+        android:layout_gravity="right|top" />
+
+    <include
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        layout="@layout/temperature_output_3"
+        android:layout_gravity="left|center_vertical" />
+
+    <include
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        layout="@layout/temperature_output_4"
+        android:layout_gravity="right|center_vertical" />
 </FrameLayout>
