@@ -98,10 +98,19 @@ public class WeatherLayoutChooser extends Fragment {
             public void onClick(View view) {
 
                 me.setVisibility(View.INVISIBLE);
-
                 LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(
                 new Intent("WEATHERCHOOSER_FINISHED"));
+            }
+        });
 
+        FloatingActionButton can = (FloatingActionButton) inf.findViewById(R.id.weatherlayoutchooser_cancel);
+        can.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                me.setVisibility(View.INVISIBLE);
+                LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(
+                new Intent("WEATHERCHOOSER_FINISHED"));
             }
         });
 
