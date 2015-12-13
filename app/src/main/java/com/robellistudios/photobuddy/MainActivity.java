@@ -11,41 +11,45 @@ import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.location.*;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.android.gms.maps.GoogleMap;
+
 import org.json.JSONException;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity
-                            implements NavigationView.OnNavigationItemSelectedListener,
-                                        WeatherLayoutChooser.OnFragmentInteractionListener,
-                                        MoveMapSettings.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        WeatherLayoutChooser.OnFragmentInteractionListener,
+        MoveMapSettings.OnFragmentInteractionListener {
 
     public static final String APP_TAG = "com.robellistudios.photobuddy"; // Application Tag
     public static final int RESULT_GALLERY = 0; // Result from open the Album (MediaStore)
@@ -77,8 +81,8 @@ public class MainActivity extends AppCompatActivity
         BroadcastReceiver localBroadcastReceiver = new LocalBroadcastReceiver();
         IntentFilter filterMMS = new IntentFilter("MMS_FINISHED");
         IntentFilter filterWLC = new IntentFilter("WEATHERCHOOSER_FINISHED");
-        LocalBroadcastManager.getInstance(this).registerReceiver(localBroadcastReceiver,filterMMS);
-        LocalBroadcastManager.getInstance(this).registerReceiver(localBroadcastReceiver,filterWLC);
+        LocalBroadcastManager.getInstance(this).registerReceiver(localBroadcastReceiver, filterMMS);
+        LocalBroadcastManager.getInstance(this).registerReceiver(localBroadcastReceiver, filterWLC);
 
         // startup GPS to be ready
         mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -110,7 +114,7 @@ public class MainActivity extends AppCompatActivity
         map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setControls(false, false, true, false, false, true);
+                setControls(false, false, true, false, false, false);
             }
         });
 
@@ -163,7 +167,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
 
                 findViewById(R.id.fragment_weatherchooser).setVisibility(View.VISIBLE);
-                setControls(false, false, false, false, false, true);
+                setControls(false, false, false, false, false, false);
             }
         });
 
@@ -176,7 +180,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
 
                 findViewById(R.id.fragment_geo).setVisibility(View.INVISIBLE);
-                setControls(true, true, false, true, true, true);
+                setControls(true, true, false, true, true, false);
             }
         });
 
@@ -188,15 +192,15 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
-                GeoMapFragment gfm = (GeoMapFragment)fragmentManager.findFragmentById(R.id.fragment_geo);
+                GeoMapFragment gfm = (GeoMapFragment) fragmentManager.findFragmentById(R.id.fragment_geo);
                 gfm.takeSnapshot();
                 DataToPhotoMerger dtpm = new DataToPhotoMerger(getApplicationContext(), ((BitmapDrawable) mMainImageView.getDrawable()).getBitmap(), gfm.mMapSnapshot);
+                mMainImageView.destroyDrawingCache();
                 mMainImageView.setImageBitmap(dtpm.mBitmap);
 
                 setControls(true, true, false, true, true, true);
             }
         });
-
 
 
         // tap get Map Settings
@@ -282,8 +286,10 @@ public class MainActivity extends AppCompatActivity
                     ArrayList al = gh.getLastLocation(getApplicationContext()); // get the LKP
 
                     // Convert
-                    Float f = (Float) al.get(0); mLat = f.doubleValue();
-                    f= (Float) al.get(1);        mLon = f.doubleValue();
+                    Float f = (Float) al.get(0);
+                    mLat = f.doubleValue();
+                    f = (Float) al.get(1);
+                    mLon = f.doubleValue();
 
                     // Execute the Weather Task
                     JSONWeatherTask task = new JSONWeatherTask();
@@ -301,13 +307,23 @@ public class MainActivity extends AppCompatActivity
         GeneralHelpers gh = new GeneralHelpers();
 
         switch (requestCode) {
-            case RESULT_GALLERY:               // from Album (MediaStore)
+            case RESULT_GALLERY:    // from Album (MediaStore)
                 if (null != data) {
                     try {
+                        setControls(
+                                findViewById(R.id.alb).getVisibility() == View.VISIBLE ? true : false,
+                                findViewById(R.id.fab).getVisibility() == View.VISIBLE ? true : false,
+                                findViewById(R.id.fragment_geo).getVisibility() == View.VISIBLE ? true : false,
+                                findViewById(R.id.start_map).getVisibility() == View.VISIBLE ? true : false,
+                                findViewById(R.id.start_weather).getVisibility() == View.VISIBLE ? true : false,
+                                false);
+
                         ImageView iv = mMainImageView;
-                        mMainImageView_Save = mMainImageView;       // save the Original Image
-                        iv.setImageURI(data.getData());
+                        iv.setImageURI(data.getData()); // get Data from MediaStore rotate and save
+
+                        // set Rotation and Scaling
                         mMainImageView = gh.RotateImage(getApplicationContext(), iv, data.getData().normalizeScheme());
+                        mMainImageView_Save = mMainImageView;       // save the Original but rotated and sclaed Image
 
                         findViewById(R.id.start_map).setVisibility(View.VISIBLE);
                         findViewById(R.id.start_weather).setVisibility(View.VISIBLE);
@@ -318,7 +334,7 @@ public class MainActivity extends AppCompatActivity
                 }
                 break;
             case RESULT_CAMERA:               // from Camera)
-                if (null != data) {
+                if(null != data) {
                     ImageView iv = mMainImageView;
                     iv.setImageURI(data.getData());
                     mMainImageView = scaleImage(iv, 2048);
@@ -334,10 +350,6 @@ public class MainActivity extends AppCompatActivity
         super.onPause();
         Log.i(APP_TAG, "PAUSED");
 
-        // Unregister the Broadcast Listener
-//        if(localBroadcastReceiver)
-//            unregisterReceiver(localBroadcastReceiver);
-
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
         } else {
             mLocationManager.removeUpdates(mLocationListener);
@@ -348,13 +360,6 @@ public class MainActivity extends AppCompatActivity
     public void onResume() {
         super.onResume();
         Log.d("PB ***", "RESUMED");
-
-        // Reregister the Brodcast Listener
-//        localBroadcastReceiver = new LocalBroadcastReceiver();
-//        IntentFilter filterMMS = new IntentFilter("MMS_FINISHED");
-//        IntentFilter filterWLC = new IntentFilter("WEATHERCHOOSER_FINISHED");
-//        LocalBroadcastManager.getInstance(this).registerReceiver(localBroadcastReceiver, filterMMS);
-//        LocalBroadcastManager.getInstance(this).registerReceiver(localBroadcastReceiver, filterWLC);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
         } else {
@@ -427,15 +432,15 @@ public class MainActivity extends AppCompatActivity
 
     /**
      * Scale Image - set the correct Scaling for the Image
-     * @param view ImageView to be scaled
+     *
+     * @param view         ImageView to be scaled
      * @param boundBoxInDp DPI
      * @return Scaled ImageView
      */
-    private ImageView scaleImage(ImageView view, int boundBoxInDp)
-    {
+    private ImageView scaleImage(ImageView view, int boundBoxInDp) {
         // Get the ImageView and its bitmap
         Drawable drawing = view.getDrawable();
-        Bitmap bitmap = ((BitmapDrawable)drawing).getBitmap();
+        Bitmap bitmap = ((BitmapDrawable) drawing).getBitmap();
 
         // Get current dimensions
         int width = bitmap.getWidth();
@@ -477,25 +482,30 @@ public class MainActivity extends AppCompatActivity
         View fragment_geo = findViewById(R.id.fragment_geo);
         fragment_geo.setAlpha(prefs.getFloat("map_settings_opaque", 100));
 
-        GeoMapFragment gfm = (GeoMapFragment)fragmentManager.findFragmentById(R.id.fragment_geo);
-        DataToPhotoMerger dtpm = new DataToPhotoMerger(getApplicationContext(), ((BitmapDrawable) mMainImageView_Save.getDrawable()).getBitmap(), gfm.mMapSnapshot);
+        GeoMapFragment gfm = (GeoMapFragment) fragmentManager.findFragmentById(R.id.fragment_geo);
+        DataToPhotoMerger dtpm = new DataToPhotoMerger(getApplicationContext(), ((BitmapDrawable) mMainImageView.getDrawable()).getBitmap(), gfm.mMapSnapshot);
+        mMainImageView.destroyDrawingCache();
         mMainImageView.setImageBitmap(dtpm.mBitmap);
 
         findViewById(R.id.fragment_geo).setVisibility(View.INVISIBLE);
         setControls(true, true, false, true, true, true);
-   }
+    }
 
 
     public void setWeatherAfterSettings() {
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
-        TableLayout tl=null;
+        TableLayout tl = null;
         LayoutInflater inflater;
         inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        TextView temp; TextView cond; TextView humi; TextView wind; TextView bear;
+        TextView temp;
+        TextView cond;
+        TextView humi;
+        TextView wind;
+        TextView bear;
 
-        switch(prefs.getString("weather_layout", "")) {
+        switch (prefs.getString("weather_layout", "")) {
             case "layout2":
                 tl = (TableLayout) inflater.inflate(R.layout.temperature_output_2, null);
                 break;
@@ -508,11 +518,11 @@ public class MainActivity extends AppCompatActivity
         }
 
         assert tl != null;
-        temp = (TextView)tl.findViewById(R.id.temperature);
-        cond = (TextView)tl.findViewById(R.id.condition);
-        humi = (TextView)tl.findViewById(R.id.humidity);
-        wind = (TextView)tl.findViewById(R.id.wind);
-        bear = (TextView)tl.findViewById(R.id.bearing);
+        temp = (TextView) tl.findViewById(R.id.temperature);
+        cond = (TextView) tl.findViewById(R.id.condition);
+        humi = (TextView) tl.findViewById(R.id.humidity);
+        wind = (TextView) tl.findViewById(R.id.wind);
+        bear = (TextView) tl.findViewById(R.id.bearing);
 
         temp.setText(mTemperature);
         cond.setText(mCondition);
@@ -520,7 +530,8 @@ public class MainActivity extends AppCompatActivity
         wind.setText(mWind);
         bear.setText(mBearing);
 
-        DataToPhotoMerger dtpm = new DataToPhotoMerger(getApplicationContext(), ((BitmapDrawable) mMainImageView_Save.getDrawable()).getBitmap(), tl, mMainImageView_Save.getWidth(), mMainImageView_Save.getHeight(), mMainImageView_Save.getMatrix());
+        DataToPhotoMerger dtpm = new DataToPhotoMerger(getApplicationContext(), ((BitmapDrawable) mMainImageView.getDrawable()).getBitmap(), tl, mMainImageView_Save.getWidth(), mMainImageView_Save.getHeight(), mMainImageView_Save.getMatrix());
+        mMainImageView.destroyDrawingCache();
         mMainImageView.setImageBitmap(dtpm.mBitmap);
         setControls(true, true, false, true, true, true);
     }
@@ -528,19 +539,19 @@ public class MainActivity extends AppCompatActivity
 
     private void setControls(boolean album, boolean camera, boolean geoframgment, boolean map, boolean weather, boolean save) {
 
-        if(album) {
+        if (album) {
             findViewById(R.id.alb).setVisibility(View.VISIBLE);
         } else {
             findViewById(R.id.alb).setVisibility(View.INVISIBLE);
         }
 
-        if(camera) {
+        if (camera) {
             findViewById(R.id.fab).setVisibility(View.VISIBLE);
         } else {
             findViewById(R.id.fab).setVisibility(View.INVISIBLE);
         }
 
-        if(geoframgment) {
+        if (geoframgment) {
             findViewById(R.id.fragment_geo).setVisibility(View.VISIBLE);
         } else {
             findViewById(R.id.fragment_geo).setVisibility(View.INVISIBLE);
@@ -564,7 +575,6 @@ public class MainActivity extends AppCompatActivity
             findViewById(R.id.save).setVisibility(View.INVISIBLE);
         }
     }
-
 
 
     private class JSONWeatherTask extends AsyncTask<String, Void, Weather> {
@@ -596,8 +606,8 @@ public class MainActivity extends AppCompatActivity
             }
 
             // put the Weatherdatas into globals
-            if(weather.temperature != null) {
-                mTemperature = String.format("%.2f\u2103", weather.temperature.getTemp() -273.15);
+            if (weather.temperature != null) {
+                mTemperature = String.format("%.2f\u2103", weather.temperature.getTemp() - 273.15);
                 mCondition = weather.currentCondition.getCondition();
                 mHumidity = String.format("%.2f %% Humidity", weather.currentCondition.getHumidity());
                 mWind = String.format("%.2f km/h", weather.wind.getSpeed());

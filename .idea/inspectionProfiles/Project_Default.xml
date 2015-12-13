@@ -16,5 +16,6 @@
       <group names="x,width,left,right" />
       <group names="y,height,top,bottom" />
     </inspection_tool>
+    <inspection_tool class="UnnecessaryConditionalExpression" enabled="false" level="WARNING" enabled_by_default="false" />
   </profile>
 </component>

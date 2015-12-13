@@ -64,6 +64,7 @@ public class helper_SaveLoadImage {
             e.printStackTrace();
         }
 
+        pictureBitmap.recycle();
         Toast.makeText(context, "Image saved in " + file.getAbsoluteFile(), Toast.LENGTH_LONG).show();
     }
 
